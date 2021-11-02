@@ -23,6 +23,10 @@ export default function ShowHero() {
     if(id){
       context.prepareHero(id);
     }
+    return () => {
+      context.setValue('abilDis', 'P');
+      context.setValue('mode', true);
+    }
   }, [router.query])
 
   return (
