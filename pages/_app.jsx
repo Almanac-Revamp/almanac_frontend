@@ -1,11 +1,13 @@
-import Layout from '../components/layout'
+import { Fragment } from 'react'
+import NavBar from '../components/navbar'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Layout>
+    <Fragment>
+      <NavBar />
       <Component {...pageProps} />
-    </Layout>
+    </Fragment>
   )
 }
 
