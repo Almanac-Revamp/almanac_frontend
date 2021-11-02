@@ -3,6 +3,7 @@ import { homeContext } from "../contexts/home_context";
 import _ from 'lodash';
 import { Observer } from "mobx-react-lite";
 import HeroThumb from "../components/hero_thumb";
+import { NextSeo } from "next-seo";
 
 export default function Home() {
   const context = useContext(homeContext);
@@ -20,6 +21,7 @@ export default function Home() {
     <Observer>
       {() => (
         <Fragment>
+          <NextSeo title="Almanac – Hero Database" />
           <div className="navButton">
             <input ref={input} placeholder="SEARCH" className="input mt-3 mr-3 ml-4" onChange={(e) => context.setValue('searchWord', e.target.value)} />
             <select ref={selectClass} className="input mr-3" onChange={(e) => context.setValue('chosenClass', e.target.value)}>

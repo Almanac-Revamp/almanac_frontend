@@ -8,6 +8,7 @@ import AbilityCard from "../../components/ability_card";
 import StatsCard from "../../components/stats_card";
 import AttackSpeedCard from "../../components/attack_speed_card";
 import RatingsCard from "../../components/ratings_card";
+import { NextSeo } from "next-seo";
 
 export default function ShowHero() {
   const context = useContext(showHeroContext);
@@ -27,7 +28,9 @@ export default function ShowHero() {
   return (
     <Observer>
       {() => (
-        context.isLoad && (
+      <Fragment>
+        <NextSeo title={context.isLoad ? `Almanac – ${context.hero.name}, ${context.hero.title}` : "Almanac – Hero Database"} />
+        {context.isLoad && (
           <Fragment>
             <div className="grid grid-cols-5 mx-16">
               <div className="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
@@ -89,7 +92,8 @@ export default function ShowHero() {
               </div>
             </div>
           </Fragment>
-        )
+        )}
+      </Fragment>
       )}
     </Observer>
   )
