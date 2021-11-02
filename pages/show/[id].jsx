@@ -1,5 +1,4 @@
 import { Observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { Fragment, useContext, useEffect } from "react";
 import { showHeroContext } from "../../contexts/show_hero_context";
@@ -10,24 +9,20 @@ import AttackSpeedCard from "../../components/attack_speed_card";
 import RatingsCard from "../../components/ratings_card";
 import { NextSeo } from "next-seo";
 
-export default function ShowHero() {
+export default function ShowHero({ id }) {
   const context = useContext(showHeroContext);
-  const router = useRouter();
-  const { id } = router.query;
 
   const deleteHero = () => {
 
   }
 
   useEffect(() => {
-    if(id){
-      context.prepareHero(id);
-    }
+    context.prepareHero(id);
     return () => {
       context.setValue('abilDis', 'P');
       context.setValue('mode', true);
     }
-  }, [router.query])
+  }, [])
 
   return (
     <Observer>
@@ -101,4 +96,10 @@ export default function ShowHero() {
       )}
     </Observer>
   )
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: {id: context.params.id}
+  }
 }
