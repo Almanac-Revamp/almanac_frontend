@@ -1,16 +1,56 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navButton {
+  @apply px-3 py-2 text-lg font-semibold text-warmGray
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.row {
+  @apply flex justify-start w-full gap-x-5 mb-3
 }
 
-* {
-  box-sizing: border-box;
+.tb {
+  @apply bg-gray-100 w-96 py-1 px-2 text-sm rounded-sm focus:outline-none focus:ring focus:ring-purple-200 transition duration-100
+}
+
+.input {
+  @apply bg-lightPB bg-opacity-10 rounded-lg focus:outline-none text-base font-semibold px-2 py-1
+}
+
+.displayButton{
+  @apply font-bold bg-darkViolet text-paleViolet text-xl px-5 py-2 focus:outline-none rounded-full mx-auto hover:bg-lightPB hover:text-darkPB transition duration-100
+}
+
+html {
+  overflow: overlay;
+  font-family: "Dosis", "Athiti", "M PLUS Rounded 1c";
+  background-color: #22212B;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }

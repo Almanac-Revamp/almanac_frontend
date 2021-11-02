@@ -2,18 +2,30 @@
   "name": "almanac_frontend",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env TAILWIND_MODE=watch next dev -p 3005",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "cross-env TAILWIND_MODE=watch next start",
+    "lint": "next lint",
+    "db": "json-server --watch db.json --port 3006"
   },
   "dependencies": {
+    "axios": "^0.24.0",
+    "classnames": "^2.2.6",
+    "cross-env": "^7.0.3",
+    "lodash": "^4.17.21",
+    "mobx": "^6.3.6",
+    "mobx-react-lite": "^3.2.2",
     "next": "12.0.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-quilljs": "^1.2.17",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.0",
     "eslint": "7.32.0",
-    "eslint-config-next": "12.0.2"
+    "eslint-config-next": "12.0.2",
+    "postcss": "^8.3.11",
+    "tailwindcss": "^2.2.19"
   }
 }
