@@ -13,3 +13,7 @@ export function getClasses() {
 export function getHeroes() {
   return axios.get(`${host}${port}/heroes`)
 }
+
+export function getHeroById(id) {
+  return axios.get(`${host}${port}/heroes/${id}`)
+}
