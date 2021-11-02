@@ -1,16 +1,17 @@
 import { Fragment } from "react";
 import _ from 'lodash';
+import classNames from "classnames";
 
-const Header = ({ name, header }) => {
+const Header = ({ name, header, summon }) => {
   return (
     <Fragment>
-      <div className="font-bold text-2xl pr-6 whitespace-nowrap">{ name }</div>
-      <div className="flex flex-wrap relative z-20">
+      <div className={classNames("font-bold text-2xl pr-6 whitespace-nowrap", {"py-2": summon})}>{ name }</div>
+      <div className={classNames("flex flex-wrap relative z-20", {"border-t-2 py-2": summon})}>
         {_.map(header, (desc, head) => (
           <Fragment key={head}>
             {decodeURIComponent(desc).slice(3, -4).toLowerCase() !== '<br>' && desc && (
-              <div className="uppercase text-sm px-2 inline-block">
-                <b>{head}</b>: <span dangerouslySetInnerHTML={{__html: decodeURIComponent(desc).slice(3, -4)}} />
+              <div className={classNames("text-sm px-2 inline-block", {"uppercase": !summon})}>
+                <b className={summon && "uppercase"}>{head}</b>: <span dangerouslySetInnerHTML={{__html: decodeURIComponent(desc).slice(3, -4)}} />
               </div>
             )}
           </Fragment>
@@ -67,7 +68,7 @@ export default function AbilityCard({ ability }) {
         {
           _.map(ability.summon, (unit, index) => (
             <Fragment key={index}>
-              <Header name={unit.name} header={unit.header} />
+              <Header name={unit.name} header={unit.header} summon={true} />
               <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: decodeURIComponent(unit.desc)}}></div>
             </Fragment>
           ))
