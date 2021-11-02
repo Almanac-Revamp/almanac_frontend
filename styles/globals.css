@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow: overlay;
+  font-family: "Dosis", "Athiti", "M PLUS Rounded 1c";
+  background-color: #22212B;
+}
+
 .navButton {
   @apply px-3 py-2 text-lg font-semibold text-warmGray
 }
@@ -20,14 +26,6 @@
 
 .displayButton{
   @apply font-bold bg-darkViolet text-paleViolet text-xl px-5 py-2 focus:outline-none rounded-full mx-auto hover:bg-lightPB hover:text-darkPB transition duration-100
-}
-
-html {
-  overflow: overlay;
-  font-family: "Dosis", "Athiti", "M PLUS Rounded 1c";
-  background-color: #22212B;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* width */
