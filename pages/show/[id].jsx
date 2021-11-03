@@ -21,6 +21,7 @@ export default function ShowHero({ id }) {
     return () => {
       context.setValue('abilDis', 'P');
       context.setValue('mode', true);
+      context.setValue('isLoad', false);
     }
   }, [])
 
