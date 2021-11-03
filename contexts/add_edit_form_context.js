@@ -202,12 +202,14 @@ class AddEditFormContext {
   hero;
   classes;
   abilDis;
+  isLoad;
 
   constructor() {
-    this.hero = new Hero({});
+    this.hero = null;
     // this.hero = {};
     this.classes = [];
     this.abilDis = 'P';
+    this.isLoad = false;
     makeAutoObservable(this);
   }
 
@@ -229,6 +231,9 @@ class AddEditFormContext {
       } catch (err) {
         console.log(err)
       }
+    } else {
+      this.setValue('hero', new Hero({}));
+      this.setValue('isLoad', true);
     }
   }
 

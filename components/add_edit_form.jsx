@@ -14,7 +14,7 @@ export default function AddEditForm({ id }) {
 
   return (
     <Observer>
-      {() => (
+      {() => ( context.isLoad &&
         <div class="grid grid-cols-5 mx-16">
           <div class="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
             <div class="w-full">
