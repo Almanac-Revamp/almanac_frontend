@@ -51,7 +51,7 @@ export default function AbilityCard({ ability }) {
         <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: decodeURIComponent(ability.desc)}}></div>
         {ability.slot !== 'P' && (
           <Fragment>
-            <Scaling scaling={ability.scaling} />
+            {ability.scaling && <Scaling scaling={ability.scaling} />}
             {
               _.map(ability.subAbility, (subAbility, index) => (
                 <div className="pt-5" key={index}>
