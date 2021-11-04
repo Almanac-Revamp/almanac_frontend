@@ -9,9 +9,15 @@ class Stats {
   growth;
 
   constructor(data) {
-    this.name = data.name ?? "";
-    this.base = data.base ?? "";
-    this.growth = data.growth ?? "";
+    if(typeof data === 'string'){
+      this.name = data;
+      this.base = "";
+      this.growth = "";
+    } else {
+      this.name = data.name ?? "";
+      this.base = data.base ?? "";
+      this.growth = data.growth ?? "";
+    }
     makeAutoObservable(this);
   }
 
@@ -92,8 +98,13 @@ class Scaling {
   value;
 
   constructor(data){
-    this.key = data.key ?? "";
-    this.value = data.value ? decodeURIComponent(data.value) : "";
+    if(typeof data === 'string'){
+      this.key = data;
+      this.value = "";
+    } else {
+      this.key = data.key ?? data.name ?? "";
+      this.value = data.value ? decodeURIComponent(data.value) : data.base ? decodeURIComponent(data.base) : "";
+    }
     makeAutoObservable(this);
   }
 
@@ -235,13 +246,24 @@ class Hero {
   constructor(data) {
     this.name = data.name ?? '';
     this.title = data.title ?? '';
-    this.resource = data.resource ?? '';
+    this.resource = data.resource ?? 'Mana';
     this.attackType = data.attackType ?? '';
     this.className = data.class ?? '';
-    this.stats = data.stats ? _.map(data.stats, (stat) => new Stats(stat)) : [];
-    this.attackSpeed = data.attackSpeed ? _.map(data.attackSpeed, (stat) => new Stats(stat)) : [];
-    this.ratings = data.ratings ? _.map(data.ratings, (stat) => new Stats(stat)) : [];
-    this.abilities = data.abilities ? _.map(data.abilities, (stat) => new Ability(stat)) : [new Ability('P'), new Ability('Q'), new Ability('W'), new Ability('E'), new Ability('R')];
+    this.stats = data.stats ? _.map(data.stats, (stat) => new Stats(stat)) : [
+      new Stats('Health'), new Stats('Mana'), new Stats('Stamina'), new Stats('Health Regen'),
+      new Stats('Mana Regen'), new Stats('Stamina Regen'), new Stats('Secondary Bar'), new Stats('Armor'),
+      new Stats('Attack Damage'), new Stats('Magic Resist'), new Stats('Crit Damage'), new Stats('Move Speed'),
+      new Stats('Range')
+    ];
+    this.attackSpeed = data.attackSpeed ? _.map(data.attackSpeed, (stat) => new Scaling(stat)) : [
+      new Scaling('Base Attack Speed'), new Scaling('Missile Speed'), new Scaling('Attack Speed Ratio'), new Scaling('Bonus Attack Speed')
+    ];
+    this.ratings = data.ratings ? _.map(data.ratings, (stat) => new Scaling(stat)) : [
+      new Scaling('Damage'), new Scaling('Toughness'), new Scaling('Control'), new Scaling('Mobility'), new Scaling('Utility'), new Scaling('Difficulty')
+    ];
+    this.abilities = data.abilities ? _.map(data.abilities, (stat) => new Ability(stat)) : [
+      new Ability('P'), new Ability('Q'), new Ability('W'), new Ability('E'), new Ability('R')
+    ];
     makeAutoObservable(this);
   }
   
@@ -255,6 +277,9 @@ class AddEditFormContext {
   classes;
   abilDis;
   isLoad;
+  toggleStat;
+  toggleAs;
+  toggleRatings;
 
   constructor() {
     this.hero = null;
@@ -262,6 +287,9 @@ class AddEditFormContext {
     this.classes = [];
     this.abilDis = 'P';
     this.isLoad = false;
+    this.toggleStat = false;
+    this.toggleAs = false;
+    this.toggleStat = false;
     makeAutoObservable(this);
   }
 

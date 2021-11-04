@@ -1,11 +1,80 @@
+import classNames from "classnames";
 import _ from "lodash";
 import { Observer } from "mobx-react-lite";
 import { Fragment, useContext, useEffect } from "react"
 import { addEditFormContext } from "../contexts/add_edit_form_context"
 import EditAbilityCard from "./edit_ability_card";
 
+const StatBlock = ({ stats, resource, getIcon }) => {
+  return (
+    <Observer>
+      {() => (
+      <Fragment>
+        {_.map(stats, (stat, index) => {
+          if(resource === 'Mana'){
+            return (
+              <Fragment key={index}>
+                {stat.name !== 'Stamina' && stat.name !== 'Stamina Regen' && stat.name != 'Secondary Bar' && (
+                  <div className={`text-paleViolet text-sm uppercase w-full`}>
+                    <div className="flex flex-col gap-y-3 px-4 py-2 font-bold">
+                      <div className="flex items-center"><img src={getIcon(stat.name)} className="w-4 h-4 mr-2"/>{ stat.name }:</div>
+                      <div className="flex w-full gap-x-3">
+                        <div>Base: <input type="text" value={stat.base} onChange={(e) => stat.setValue('base', e.target.value)} className="input w-full"/></div>
+                        {stat.name != 'Range' && stat.name != 'Move Speed' && stat.name != 'Crit Damage' && stat.name != 'Secondary Bar' && (<div>Growth: <input type="text" value={stat.growth} onChange={(e) => stat.setValue('growth', e.target.value)} className="input w-full" /></div>)}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </Fragment>
+            )
+          }
+          if(resource === 'Stamina'){
+            return (
+              <Fragment key={index}>
+                {stat.name !== 'Mana' && stat.name !== 'Mana Regen' && stat.name != 'Secondary Bar' && (
+                  <div className={`text-paleViolet text-sm uppercase w-full`}>
+                    <div className="flex flex-col gap-y-3 px-4 py-2 font-bold">
+                      <div className="flex"><img src={getIcon(stat.name)} className="w-4 h-4 mr-2"/>{ stat.name }:</div>
+                      <div className="flex w-full gap-x-3">
+                        <div>Base: <input type="text" value={stat.base} onChange={(e) => stat.setValue('base', e.target.value)} className="input w-full"/></div>
+                        {stat.name != 'Range' && stat.name != 'Move Speed' && stat.name != 'Crit Damage' && stat.name != 'Secondary Bar' && <div>Growth: <input type="text" value={stat.growth} onChange={(e) => stat.setValue('growth', e.target.value)} className="input w-full" /></div>}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </Fragment>
+            )
+          }
+          if(resource === 'N/A'){
+            return (
+              <Fragment key={index}>
+                {stat.name !== 'Stamina' && stat.name !== 'Stamina Regen' && stat.name != 'Mana Regen' && (
+                  <div className={`text-paleViolet text-sm uppercase w-full`}>
+                    <div className="flex flex-col gap-y-3 px-4 py-2 font-bold">
+                      <div className="flex"><img src={getIcon(stat.name)} className="w-4 h-4 mr-2"/>{ stat.name }:</div>
+                      <div className="flex w-full gap-x-3">
+                        <div>Base: <input type="text" value={stat.base} onChange={(e) => stat.setValue('base', e.target.value)} className="input w-full"/></div>
+                        {stat.name != 'Range' && stat.name != 'Move Speed' && stat.name != 'Crit Damage' && stat.name != 'Secondary Bar' && <div>Growth: <input type="text" value={stat.growth} onChange={(e) => stat.setValue('growth', e.target.value)} className="input w-full" /></div>}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </Fragment>
+            )
+          }
+        })}
+      </Fragment>
+      )}
+    </Observer>
+  )
+}
+
 export default function AddEditForm({ id }) {
   const context = useContext(addEditFormContext);
+
+  const getIcon = (head) => {
+    return head == 'Secondary Bar' ? `/images/icons/mana_regen.png` : `/images/icons/${_.snakeCase(head)}.png`;
+  }
 
   useEffect(() => {
     context.prepareHero(id);
@@ -87,6 +156,45 @@ export default function AddEditForm({ id }) {
                 }
               </Fragment>
             ))}
+          </div>
+          <div className="w-full mt-5 pl-11 col-span-2 order-3">
+          <div className="bg-darkViolet text-paleViolet text-2xl font-bold my-5 flex justify-between items-center cursor-pointer transition hover:bg-PB py-5 px-5 rounded-lg" onClick={() => context.setValue('toggleStat', !context.toggleStat)}>Base Statistics
+            <i className={classNames("fas fa-angle-down mr-2", {"transform rotate-180": context.toggleStat})} /></div>
+            {context.toggleStat && (
+              <div className="grid grid-cols-2 gap-y-1 overflow-auto bg-darkViolet rounded-xl py-3">
+                <StatBlock stats={context.hero.stats} resource={context.hero.resource} getIcon={getIcon} />
+              </div>
+            )}
+            <div className="bg-darkViolet text-paleViolet text-2xl font-bold my-5 flex justify-between items-center cursor-pointer transition hover:bg-PB py-5 px-5 rounded-lg" onClick={() => context.setValue('toggleAs', !context.toggleAs)}>
+            <span><img src={getIcon('Attack Speed')} className="inline w-5 h-5 mr-3 -mt-1"/>Attack Speed</span>
+            <i className={classNames("fas fa-angle-down mr-2", {"transform rotate-180": context.toggleAs})} /></div>
+            {context.toggleAs && (
+              <div className="flex flex-wrap gap-y-1 h-26 overflow-auto bg-darkViolet rounded-xl py-3">
+                {_.map(context.hero.attackSpeed, (stat, index) => (
+                  <div key={index} className="text-paleViolet text-sm uppercase w-1/2 flex flex-wrap px-4 py-2">
+                    <div className="font-bold mb-1">{ stat.key }</div>: <input type="text" value={stat.value} onChange={(e) => stat.setValue('value', e.target.value)} className="input w-full"/>
+                  </div>
+                ))}
+            </div>
+            )}
+            <div className="bg-darkViolet text-paleViolet text-2xl font-bold my-5 flex justify-between items-center cursor-pointer transition hover:bg-PB py-5 px-5 rounded-lg" onClick={() => context.setValue('toggleRatings', !context.toggleRatings)}>Ratings
+            <i className={classNames("fas fa-angle-down mr-2", {"transform rotate-180": context.toggleRatings})} /></div>
+            {context.toggleRatings && (
+              <div className="grid grid-cols-6 gap-y-1 h-26 overflow-auto bg-darkViolet rounded-xl py-3 px-1">
+                {_.map(context.hero.ratings, (stat, index) => (
+                  <div key={index} className="text-paleViolet font-bold text-sm uppercase py-2 col-span-1 flex flex-col">
+                    <div className="inline-block w-full text-center">{ stat.key }</div>
+                    <div className="w-full flex justify-center">
+                      <select value={stat.value} onChange={(e) => stat.setValue('value', e.target.value)} className="input">
+                        <option className="text-darkViolet" value="1">1</option>
+                        <option className="text-darkViolet" value="2">2</option>
+                        <option className="text-darkViolet" value="3">3</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            )}
           </div>
         </div>
       )}
