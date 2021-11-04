@@ -53,6 +53,26 @@ html {
             user-select: none;
 }
 
+.ql-bubble .ql-tooltip {
+  z-index: 100 !important;
+}
+
+.quill .ql-editor {
+  font-family: "Dosis", "Athiti", "M PLUS Rounded 1c";
+}
+
+.header .ql-editor {
+  font-size: 0.75rem;
+}
+
+.desc .ql-editor {
+  font-size: 1rem;
+}
+
+.scaling .ql-editor {
+  font-size: 0.875rem;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
