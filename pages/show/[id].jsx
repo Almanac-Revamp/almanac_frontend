@@ -60,7 +60,7 @@ export default function ShowHero({ id }) {
                 </div>
               </div>
               <div className="w-full mt-5 col-span-2 order-2">
-                <div className="text-paleViolet text-2xl font-bold mb-5">Abilities
+                <div className="text-paleViolet text-2xl font-bold mb-5"><span className="mr-1">Abilities</span>
                   {_.map(context.hero.abilities, (ability, index) => (
                     <button key={index} className={`ml-2 mb-2 font-bold text-base px-5 py-1 focus:outline-none rounded-full mx-auto hover:bg-lightPB hover:text-darkPB transition duration-100
                     ${ability.slot != context.abilDis ? 'bg-PB text-paleViolet' : 'bg-lightPB text-darkPB'}`}

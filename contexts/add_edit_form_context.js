@@ -37,19 +37,20 @@ class Header {
   targetImmunity;
 
   constructor(data) {
-    this.range = data.range ?? "";
-    this.targetRange = data.targetRange ?? "";
-    this.collisionRadius = data.collisionRadius ?? "";
-    this.effectRadius = data.effectRadius ?? "";
-    this.tetherRadius = data.tetherRadius ?? "";
-    this.angle = data.angle ?? "";
-    this.speed = data.speed ?? "";
-    this.castTime = data.castTime ?? "";
-    this.cost = data.cost ?? "";
-    this.cooldown = data.cooldown ?? "";
-    this.staticCooldown = data.staticCooldown ?? "";
-    this.recharge = data.recharge ?? "";
-    this.targetImmunity = data.targetImmunity ?? "";
+    this.range = data.range ? decodeURIComponent(data.range) : "";
+    this.targetRange = data['target range'] ? decodeURIComponent(data['target range']) : "";
+    this.collisionRadius = data['collision radius'] ? decodeURIComponent(data['collision radius']) : "";
+    this.effectRadius = data['effect radius'] ? decodeURIComponent(data['effect radius']) : "";
+    this.tetherRadius = data['tether radius'] ? decodeURIComponent(data['tether radius']) : "";
+    this.width = data.width ? decodeURIComponent(data.width) : "";
+    this.angle = data.angle ? decodeURIComponent(data.angle) : "";
+    this.speed = data.speed ? decodeURIComponent(data.speed) : "";
+    this.castTime = data['cast time'] ? decodeURIComponent(data['cast time']) : "";
+    this.cost = data.cost ? decodeURIComponent(data.cost) : "";
+    this.cooldown = data.cooldown ? decodeURIComponent(data.cooldown) : "";
+    this.staticCooldown = data['static cooldown'] ? decodeURIComponent(data['static cooldown']) : "";
+    this.recharge = data.recharge ? decodeURIComponent(data.recharge) : "";
+    this.targetImmunity = data['target immunity'] ? decodeURIComponent(data['target immunity']) : "";
     makeAutoObservable(this);
   }
 
@@ -70,14 +71,14 @@ class SummonHeader {
   lifespan;
 
   constructor(data) {
-    this.health = data.health ?? "";
-    this.attackDamage = data['attack damage'] ?? "";
-    this.attackSpeed = data['attack speed'] ?? "";
-    this.criticalStrikeChance = data['critical strike chance'] ?? "";
-    this.armor = data.armor ?? "";
-    this.magicResistance = data['magic resistance'] ?? "";
-    this.range = data.range ?? "";
-    this.lifespan = data.lifespan ?? "";
+    this.health = data.health ? decodeURIComponent(data.health) : "";
+    this.attackDamage = data['attack damage'] ? decodeURIComponent(data['attack damage']) : "";
+    this.attackSpeed = data['attack speed'] ? decodeURIComponent(data['attack speed']) : "";
+    this.criticalStrikeChance = data['critical strike chance'] ? decodeURIComponent(data['critical strike chance']) : "";
+    this.armor = data.armor ? decodeURIComponent(data.armor) : "";
+    this.magicResistance = data['magic resistance'] ? decodeURIComponent(data['magic resistance']) : "";
+    this.range = data.range ? decodeURIComponent(data.range) : "";
+    this.lifespan = data.lifespan ? decodeURIComponent(data.lifespan) : "";
     makeAutoObservable(this);
   }
 
@@ -92,7 +93,7 @@ class Scaling {
 
   constructor(data){
     this.key = data.key ?? "";
-    this.value = data.value ?? "";
+    this.value = data.value ? decodeURIComponent(data.value) : "";
     makeAutoObservable(this);
   }
 
@@ -108,7 +109,7 @@ class Summon {
 
   constructor(data) {
     this.name = data.name ?? "";
-    this.desc = data.desc ?? "";
+    this.desc = data.desc ? decodeURIComponent(data.desc) : "";
     this.header = data.header ? new SummonHeader(data.header) : new SummonHeader({});
     makeAutoObservable(this);
   }
@@ -125,15 +126,35 @@ class SubAbility {
   scaling;
 
   constructor(data) {
-    this.header = new Header(data.header) ?? new Header({});
+    this.header = data.header ? new Header(data.header) : new Header({});
     this.name = data.name ?? "";
-    this.desc = data.desc ?? "";
+    this.desc = data.desc ? decodeURIComponent(data.desc) : "";
     this.scaling = data.scaling ? _.map(data.scaling, (scale) => new Scaling(scale)) : [];
     makeAutoObservable(this);
   }
 
   setValue(key, value) {
     this[key] = value;
+  }
+
+  addScaling() {
+    this.scaling.push(new Scaling({}))
+  }
+
+  shiftLeft = (index) => {
+    let buffer = this.scaling[index];
+    this.scaling[index] = this.scaling[index - 1];
+    this.scaling[index - 1] = buffer;
+  }
+
+  shiftRight = (index) => {
+    let buffer = this.scaling[index];
+    this.scaling[index] = this.scaling[index + 1];
+    this.scaling[index + 1] = buffer;
+  }
+
+  delScale = (index) => {
+    this.scaling.splice(index, 1);
   }
 }
 
@@ -152,11 +173,14 @@ class Ability {
       this.header = new Header({});
       this.name = "";
       this.desc = "";
+      this.scaling = [];
+      this.subAbility = [];
+      this.summon = [];
     } else {
       this.slot = data.slot ?? "";
       this.header = data.header ? new Header(data.header) : new Header({});
       this.name = data.name ?? "";
-      this.desc = data.desc ?? "";
+      this.desc = data.desc ? decodeURIComponent(data.desc) : "";
       this.scaling = data.scaling ? _.map(data.scaling, (scale) => new Scaling(scale)) : [];
       this.subAbility = data.subAbility ? _.map(data.subAbility, (subAbil) => new SubAbility(subAbil)) : [];
       this.summon = data.summon ? _.map(data.summon, (summ) => new Summon(summ)) : [];
@@ -166,6 +190,34 @@ class Ability {
 
   setValue(key, value) {
     this[key] = value;
+  }
+
+  addSubAbility() {
+    this.subAbility.push(new SubAbility({}));
+  }
+
+  addSummon() {
+    this.summon.push(new Summon({}));
+  }
+
+  addScaling() {
+    this.scaling.push(new Scaling({}))
+  }
+
+  shiftLeft = (index) => {
+    let buffer = this.scaling[index];
+    this.scaling[index] = this.scaling[index - 1];
+    this.scaling[index - 1] = buffer;
+  }
+
+  shiftRight = (index) => {
+    let buffer = this.scaling[index];
+    this.scaling[index] = this.scaling[index + 1];
+    this.scaling[index + 1] = buffer;
+  }
+
+  delItem = (key, index) => {
+    this[key].splice(index, 1);
   }
 }
 
@@ -223,8 +275,8 @@ class AddEditFormContext {
         const res = await getHeroById(id);
         if(res.status === 200){
           this.setValue('hero', new Hero(res.data));
-          console.log(res.data)
-          console.log(this.hero)
+          // console.log(res.data)
+          // console.log(this.hero)
           // this.setValue('hero', res.data);
           this.setValue('isLoad', true);
         }

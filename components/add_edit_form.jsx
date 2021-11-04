@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Observer } from "mobx-react-lite";
 import { Fragment, useContext, useEffect } from "react"
 import { addEditFormContext } from "../contexts/add_edit_form_context"
-import AbilityCard from "./ability_card";
+import EditAbilityCard from "./edit_ability_card";
 
 export default function AddEditForm({ id }) {
   const context = useContext(addEditFormContext);
@@ -15,28 +15,28 @@ export default function AddEditForm({ id }) {
   return (
     <Observer>
       {() => ( context.isLoad &&
-        <div class="grid grid-cols-5 mx-16">
-          <div class="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
-            <div class="w-full">
-              <img src="/images/default.jpg" class="rounded-3xl w-3/4 object-cover object-center" />
-              <div class="ml-48 -mt-8 relative">
-                <div id="spin" class="h-14 w-14 rounded-full flex flex-wrap justify-center content-center border-darkViolet text-paleViolet cursor-pointer" style={{borderWidth: "1.8rem"}}>
-                  <i class="fas fa-sync-alt text-2xl" />
+        <div className="grid grid-cols-5 mx-16">
+          <div className="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
+            <div className="w-full">
+              <img src="/images/default.jpg" className="rounded-3xl w-3/4 object-cover object-center" />
+              <div className="ml-48 -mt-8 relative">
+                <div id="spin" className="h-14 w-14 rounded-full flex flex-wrap justify-center content-center border-darkViolet text-paleViolet cursor-pointer" style={{borderWidth: "1.8rem"}}>
+                  <i className="fas fa-sync-alt text-2xl" />
                 </div>
               </div>
             </div>
-            <div class="flex flex-col gap-y-3 mt-2">
-              <div class="text-paleViolet text-xl">
-                <span class="font-bold mr-2">Name:</span>
-                <input value={context.hero.name} onChange={(e) => context.hero.setValue('name', e.target.value)} class="input" />
+            <div className="flex flex-col gap-y-3 mt-2">
+              <div className="text-paleViolet text-xl">
+                <span className="font-bold mr-2">Name:</span>
+                <input value={context.hero.name} onChange={(e) => context.hero.setValue('name', e.target.value)} className="input" />
               </div>
-              <div class="text-paleViolet text-xl">
-                <span class="font-bold mr-2">Title:</span>
-                <input value={context.hero.title} onChange={(e) => context.hero.setValue('title', e.target.value)} class="input" />
+              <div className="text-paleViolet text-xl">
+                <span className="font-bold mr-2">Title:</span>
+                <input value={context.hero.title} onChange={(e) => context.hero.setValue('title', e.target.value)} className="input" />
               </div>
-              <div class="text-paleViolet text-xl">
-                <span class="font-bold mr-2">Class:</span>
-                <select class="input" value={context.hero.className} onChange={(e) => context.hero.setValue('className', e.target.value)}>
+              <div className="text-paleViolet text-xl">
+                <span className="font-bold mr-2">Class:</span>
+                <select className="input" value={context.hero.className} onChange={(e) => context.hero.setValue('className', e.target.value)}>
                   {_.map(context.classes, (heroClass, index) => {
                   return (
                     heroClass.subtypes.length > 1 && (_.map(heroClass.subtypes, (subtypes, subIndex) => (
@@ -46,30 +46,30 @@ export default function AddEditForm({ id }) {
                 })}
                 </select>
               </div>
-              <div class="text-paleViolet text-xl">
-                <span class="font-bold mr-2">Resource:</span>
-                <select class="input" value={context.hero.resource} onChange={(e) => context.hero.setValue('resource', e.target.value)}>
-                  <option class="text-darkViolet" value="Mana">Mana</option>
-                  <option class="text-darkViolet" value="Stamina">Stamina</option>
-                  <option class="text-darkViolet" value="N/A">N/A</option>
+              <div className="text-paleViolet text-xl">
+                <span className="font-bold mr-2">Resource:</span>
+                <select className="input" value={context.hero.resource} onChange={(e) => context.hero.setValue('resource', e.target.value)}>
+                  <option className="text-darkViolet" value="Mana">Mana</option>
+                  <option className="text-darkViolet" value="Stamina">Stamina</option>
+                  <option className="text-darkViolet" value="N/A">N/A</option>
                 </select>
               </div>
-              <div class="text-paleViolet text-xl">
-                <span class="font-bold mr-2">Range Type:</span>
-                <select class="input" value={context.hero.attackType} onChange={(e) => context.hero.setValue('attackType', e.target.value)}>
-                  <option class="text-darkViolet" value="Melee">Melee</option>
-                  <option class="text-darkViolet" value="Ranged">Ranged</option>
+              <div className="text-paleViolet text-xl">
+                <span className="font-bold mr-2">Range Type:</span>
+                <select className="input" value={context.hero.attackType} onChange={(e) => context.hero.setValue('attackType', e.target.value)}>
+                  <option className="text-darkViolet" value="Melee">Melee</option>
+                  <option className="text-darkViolet" value="Ranged">Ranged</option>
                 </select>
               </div>
-              <div class="w-3/4 flex justify-center">
-                <button class="font-bold bg-darkViolet text-paleViolet text-xl px-5 py-2 focus:outline-none rounded-full mx-auto mt-2">
+              <div className="w-3/4 flex justify-center">
+                <button className="font-bold bg-darkViolet text-paleViolet text-xl px-5 py-2 focus:outline-none rounded-full mx-auto mt-2">
                   Save
                 </button>
               </div>
             </div>
           </div>
-          <div class="w-full mt-5 col-span-2 order-2">
-            <div className="text-paleViolet text-2xl font-bold mb-5">Abilities
+          <div className="w-full mt-5 col-span-2 order-2">
+            <div className="text-paleViolet text-2xl font-bold mb-5"><span className="mr-1">Abilities</span>
               {_.map(['P', 'Q', 'W', 'E', 'R'], (slot) => (
                 <button key={slot} className={`ml-2 mb-2 font-bold text-base px-5 py-1 focus:outline-none rounded-full mx-auto hover:bg-lightPB hover:text-darkPB transition duration-100
                   ${slot != context.abilDis ? 'bg-PB text-paleViolet' : 'bg-lightPB text-darkPB'}`}
@@ -82,7 +82,7 @@ export default function AddEditForm({ id }) {
               <Fragment key={index}>
                 {
                   slot === context.abilDis && (
-                    <AbilityCard ability={context.hero.abilities[index]} />
+                    <EditAbilityCard ability={context.hero.abilities[index]} />
                   )
                 }
               </Fragment>

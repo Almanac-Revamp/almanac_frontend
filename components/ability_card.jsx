@@ -9,9 +9,9 @@ const Header = ({ name, header, summon }) => {
       <div className={classNames("flex flex-wrap relative z-20", {"border-t-2 py-2": summon})}>
         {_.map(header, (desc, head) => (
           <Fragment key={head}>
-            {decodeURIComponent(desc).slice(3, -4).toLowerCase() !== '<br>' && desc && (
+            {desc.slice(3, -4).toLowerCase() !== '<br>' && desc && (
               <div className={classNames("text-sm px-2 inline-block", {"uppercase": !summon})}>
-                <b className={summon && "uppercase"}>{head}</b>: <span dangerouslySetInnerHTML={{__html: decodeURIComponent(desc).slice(3, -4)}} />
+                <b className={summon && "uppercase"}>{head}</b>: <span dangerouslySetInnerHTML={{__html: desc.slice(3, -4)}} />
               </div>
             )}
           </Fragment>
@@ -30,7 +30,7 @@ const Scaling = ({ scaling }) => {
             _.map(scaling, (item, index) => (
               <div key={index} class="w-1/2 px-1">
                 <div class="uppercase font-bold">{ item.key }</div>
-                <div dangerouslySetInnerHTML={{__html: decodeURIComponent(item.value)}}></div>
+                <div dangerouslySetInnerHTML={{__html: item.value}}></div>
               </div>
             ))
           }
@@ -48,7 +48,7 @@ export default function AbilityCard({ ability }) {
         <div className="flex pb-2">
           <Header name={ability.name} header={ability.header} />
         </div>
-        <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: decodeURIComponent(ability.desc)}}></div>
+        <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: ability.desc}}></div>
         {ability.slot !== 'P' && (
           <Fragment>
             {ability.scaling && <Scaling scaling={ability.scaling} />}
@@ -58,7 +58,7 @@ export default function AbilityCard({ ability }) {
                   <div className="flex pb-2">
                     <Header name={subAbility.name} header={subAbility.header} />
                   </div>
-                  <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: decodeURIComponent(subAbility.desc)}}></div>
+                  <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: subAbility.desc}}></div>
                   <Scaling scaling={subAbility.scaling} />
                 </div>
               ))
@@ -69,7 +69,7 @@ export default function AbilityCard({ ability }) {
           _.map(ability.summon, (unit, index) => (
             <Fragment key={index}>
               <Header name={unit.name} header={unit.header} summon={true} />
-              <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: decodeURIComponent(unit.desc)}}></div>
+              <div className="py-2 border-t-2" dangerouslySetInnerHTML={{__html: unit.desc}}></div>
             </Fragment>
           ))
         }
