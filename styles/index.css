@@ -1,0 +1,64 @@
+html {
+  overflow: overlay;
+  font-family: "Dosis", "Athiti", "M PLUS Rounded 1c";
+  background-color: #22212B;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.ql-bubble .ql-tooltip {
+  z-index: 100 !important;
+}
+
+.quill .ql-editor {
+  font-family: "Dosis", "Athiti", "M PLUS Rounded 1c";
+}
+
+.header .ql-editor {
+  font-size: 0.75rem;
+}
+
+.desc .ql-editor {
+  font-size: 1rem;
+}
+
+.scaling .ql-editor {
+  font-size: 0.875rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#spin:hover {
+  animation: spin 1s;
+}
