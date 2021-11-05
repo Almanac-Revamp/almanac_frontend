@@ -10,8 +10,8 @@ export default function AttackSpeedCard({ mode, attackSpeed }) {
       <div className="flex flex-wrap gap-y-1 h-26 overflow-auto bg-darkViolet rounded-xl py-3">
         {_.map(attackSpeed, (stat, index) => (
           <div key={index} className="text-paleViolet text-sm uppercase w-1/2 flex flex-wrap px-4 py-2">
-            <div className="font-bold">{ stat.name }</div><span className="mr-1">:</span>
-            { stat.name == 'Bonus Attack Speed' ? (mode ? '0% - ' + (Math.round((parseFloat(stat.base) * 17) * 100) / 100) + '%' : stat.base + '%' ) : stat.base }
+            <div className="font-bold">{ stat.key }</div><span className="mr-1">:</span>
+            { stat.key == 'Bonus Attack Speed' ? (mode ? '0% - ' + (Math.round((parseFloat(stat.value) * 17) * 100) / 100) + '%' : stat.value + '%' ) : stat.value }
           </div>
         ))}
       </div>

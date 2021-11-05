@@ -45,7 +45,7 @@ export default function ShowHero({ id }) {
                     { context.hero.title }
                   </li>
                   <li className="text-paleViolet text-xl">
-                    <span className="font-bold">Class:</span> { context.hero.class }
+                    <span className="font-bold">Class:</span> { context.hero.className }
                   </li>
                   <li className="text-paleViolet text-xl">
                     <span className="font-bold">Resource:</span> { context.hero.resource }

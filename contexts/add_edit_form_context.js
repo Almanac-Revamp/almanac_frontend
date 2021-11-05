@@ -1,7 +1,11 @@
 import _ from "lodash";
 import { makeAutoObservable } from "mobx";
-import { createContext } from "react";
+import { useRouter } from "next/dist/client/router";
+import Router from "next/dist/server/router";
+import React, { createContext } from "react";
 import { getClasses, getHeroById } from "../services/get";
+import { upload } from "../services/post";
+import { edit } from "../services/put";
 
 class Stats {
   name;
@@ -43,20 +47,20 @@ class Header {
   targetImmunity;
 
   constructor(data) {
-    this.range = data.range ? decodeURIComponent(data.range) : "";
-    this.targetRange = data['target range'] ? decodeURIComponent(data['target range']) : "";
-    this.collisionRadius = data['collision radius'] ? decodeURIComponent(data['collision radius']) : "";
-    this.effectRadius = data['effect radius'] ? decodeURIComponent(data['effect radius']) : "";
-    this.tetherRadius = data['tether radius'] ? decodeURIComponent(data['tether radius']) : "";
-    this.width = data.width ? decodeURIComponent(data.width) : "";
-    this.angle = data.angle ? decodeURIComponent(data.angle) : "";
-    this.speed = data.speed ? decodeURIComponent(data.speed) : "";
-    this.castTime = data['cast time'] ? decodeURIComponent(data['cast time']) : "";
-    this.cost = data.cost ? decodeURIComponent(data.cost) : "";
-    this.cooldown = data.cooldown ? decodeURIComponent(data.cooldown) : "";
-    this.staticCooldown = data['static cooldown'] ? decodeURIComponent(data['static cooldown']) : "";
-    this.recharge = data.recharge ? decodeURIComponent(data.recharge) : "";
-    this.targetImmunity = data['target immunity'] ? decodeURIComponent(data['target immunity']) : "";
+    this.range = data.range ?? "";
+    this.targetRange = data.targetRange ?? "";
+    this.collisionRadius = data.collisionRadius ?? "";
+    this.effectRadius = data.effectRadius ?? "";
+    this.tetherRadius = data.tetherRadius ?? "";
+    this.width = data.width ?? "";
+    this.angle = data.angle ?? "";
+    this.speed = data.speed ?? "";
+    this.castTime = data.castTime ?? "";
+    this.cost = data.cost ?? "";
+    this.cooldown = data.cooldown ?? "";
+    this.staticCooldown = data.staticCooldown ?? "";
+    this.recharge = data.recharge ?? "";
+    this.targetImmunity = data.targetImmunity ?? "";
     makeAutoObservable(this);
   }
 
@@ -77,14 +81,15 @@ class SummonHeader {
   lifespan;
 
   constructor(data) {
-    this.health = data.health ? decodeURIComponent(data.health) : "";
-    this.attackDamage = data['attack damage'] ? decodeURIComponent(data['attack damage']) : "";
-    this.attackSpeed = data['attack speed'] ? decodeURIComponent(data['attack speed']) : "";
-    this.criticalStrikeChance = data['critical strike chance'] ? decodeURIComponent(data['critical strike chance']) : "";
-    this.armor = data.armor ? decodeURIComponent(data.armor) : "";
-    this.magicResistance = data['magic resistance'] ? decodeURIComponent(data['magic resistance']) : "";
-    this.range = data.range ? decodeURIComponent(data.range) : "";
-    this.lifespan = data.lifespan ? decodeURIComponent(data.lifespan) : "";
+    this.health = data.health ?? "";
+    this.attackDamage = data.attackDamage ??  "";
+    this.attackSpeed = data.attackSpeed ?? "";
+    this.criticalStrikeChance = data.criticalStrikeChance ?? "";
+    this.armor = data.armor ?? "";
+    this.magicResistance = data.magicResistance ?? "";
+    this.movementSpeed = data.movementSpeed ?? "";
+    this.range = data.range ?? "";
+    this.lifespan = data.lifespan ?? "";
     makeAutoObservable(this);
   }
 
@@ -103,7 +108,7 @@ class Scaling {
       this.value = "";
     } else {
       this.key = data.key ?? data.name ?? "";
-      this.value = data.value ? decodeURIComponent(data.value) : data.base ? decodeURIComponent(data.base) : "";
+      this.value = data.value ?? "";
     }
     makeAutoObservable(this);
   }
@@ -120,7 +125,7 @@ class Summon {
 
   constructor(data) {
     this.name = data.name ?? "";
-    this.desc = data.desc ? decodeURIComponent(data.desc) : "";
+    this.desc = data.desc ?? "";
     this.header = data.header ? new SummonHeader(data.header) : new SummonHeader({});
     makeAutoObservable(this);
   }
@@ -139,7 +144,7 @@ class SubAbility {
   constructor(data) {
     this.header = data.header ? new Header(data.header) : new Header({});
     this.name = data.name ?? "";
-    this.desc = data.desc ? decodeURIComponent(data.desc) : "";
+    this.desc = data.desc ?? "";
     this.scaling = data.scaling ? _.map(data.scaling, (scale) => new Scaling(scale)) : [];
     makeAutoObservable(this);
   }
@@ -191,7 +196,7 @@ class Ability {
       this.slot = data.slot ?? "";
       this.header = data.header ? new Header(data.header) : new Header({});
       this.name = data.name ?? "";
-      this.desc = data.desc ? decodeURIComponent(data.desc) : "";
+      this.desc = data.desc ?? "";
       this.scaling = data.scaling ? _.map(data.scaling, (scale) => new Scaling(scale)) : [];
       this.subAbility = data.subAbility ? _.map(data.subAbility, (subAbil) => new SubAbility(subAbil)) : [];
       this.summon = data.summon ? _.map(data.summon, (summ) => new Summon(summ)) : [];
@@ -248,7 +253,7 @@ class Hero {
     this.title = data.title ?? '';
     this.resource = data.resource ?? 'Mana';
     this.attackType = data.attackType ?? '';
-    this.className = data.class ?? '';
+    this.className = data.className ?? '';
     this.stats = data.stats ? _.map(data.stats, (stat) => new Stats(stat)) : [
       new Stats('Health'), new Stats('Mana'), new Stats('Stamina'), new Stats('Health Regen'),
       new Stats('Mana Regen'), new Stats('Stamina Regen'), new Stats('Secondary Bar'), new Stats('Armor'),
@@ -303,8 +308,8 @@ class AddEditFormContext {
         const res = await getHeroById(id);
         if(res.status === 200){
           this.setValue('hero', new Hero(res.data));
-          // console.log(res.data)
-          // console.log(this.hero)
+          console.log(res.data)
+          console.log(this.hero)
           // this.setValue('hero', res.data);
           this.setValue('isLoad', true);
         }
@@ -322,6 +327,29 @@ class AddEditFormContext {
       const res = await getClasses();
       if(res.status === 200){
         this.setValue('classes', res.data);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async upload(router) {
+    try {
+      const res = await upload(this.hero);
+      if(res.status === 200){
+        router.push(`/`);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async edit(router, id) {
+    try {
+      console.log(this.hero)
+      const res = await edit(this.hero, id);
+      if(res.status === 200){
+        router.push(`/show/${id}`);
       }
     } catch (err) {
       console.log(err)

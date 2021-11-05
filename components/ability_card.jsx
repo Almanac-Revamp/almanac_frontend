@@ -11,7 +11,7 @@ const Header = ({ name, header, summon }) => {
           <Fragment key={head}>
             {desc.slice(3, -4).toLowerCase() !== '<br>' && desc && (
               <div className={classNames("text-sm px-2 inline-block", {"uppercase": !summon})}>
-                <b className={summon && "uppercase"}>{head}</b>: <span dangerouslySetInnerHTML={{__html: desc.slice(3, -4)}} />
+                <b className={summon && "uppercase"}>{ _.startCase(head) }</b>: <span dangerouslySetInnerHTML={{__html: desc.slice(3, -4)}} />
               </div>
             )}
           </Fragment>
@@ -25,11 +25,11 @@ const Scaling = ({ scaling }) => {
   return (
     <Fragment>
       {scaling.length > 0 && (
-        <div class="py-2 border-t-2 flex flex-wrap text-sm gap-y-3">
+        <div className="py-2 border-t-2 flex flex-wrap text-sm gap-y-3">
           {
             _.map(scaling, (item, index) => (
-              <div key={index} class="w-1/2 px-1">
-                <div class="uppercase font-bold">{ item.key }</div>
+              <div key={index} className="w-1/2 px-1">
+                <div className="uppercase font-bold">{ item.key }</div>
                 <div dangerouslySetInnerHTML={{__html: item.value}}></div>
               </div>
             ))

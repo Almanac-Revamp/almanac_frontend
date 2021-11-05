@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import _ from "lodash";
 import { Observer } from "mobx-react-lite";
+import { useRouter } from "next/dist/client/router";
 import { Fragment, useContext, useEffect } from "react"
 import { addEditFormContext } from "../contexts/add_edit_form_context"
 import EditAbilityCard from "./edit_ability_card";
@@ -71,6 +72,7 @@ const StatBlock = ({ stats, resource, getIcon }) => {
 
 export default function AddEditForm({ id }) {
   const context = useContext(addEditFormContext);
+  const router = useRouter();
 
   const getIcon = (head) => {
     return head == 'Secondary Bar' ? `/images/icons/mana_regen.png` : `/images/icons/${_.snakeCase(head)}.png`;
@@ -108,9 +110,9 @@ export default function AddEditForm({ id }) {
                 <select className="input" value={context.hero.className} onChange={(e) => context.hero.setValue('className', e.target.value)}>
                   {_.map(context.classes, (heroClass, index) => {
                   return (
-                    heroClass.subtypes.length > 1 && (_.map(heroClass.subtypes, (subtypes, subIndex) => (
+                    _.map(heroClass.subtypes, (subtypes, subIndex) => (
                       <option key={`${index}_${subIndex}`} className="text-darkViolet" value={subtypes}>{subtypes}</option>
-                    )))
+                    ))
                   )
                 })}
                 </select>
@@ -131,7 +133,13 @@ export default function AddEditForm({ id }) {
                 </select>
               </div>
               <div className="w-3/4 flex justify-center">
-                <button className="font-bold bg-darkViolet text-paleViolet text-xl px-5 py-2 focus:outline-none rounded-full mx-auto mt-2">
+                <button onClick={() => {
+                  if(id){
+                    context.edit(router, id);
+                  } else {
+                    context.upload(router);
+                  }
+                }} className="font-bold bg-darkViolet text-paleViolet text-xl px-5 py-2 focus:outline-none rounded-full mx-auto mt-2">
                   Save
                 </button>
               </div>
