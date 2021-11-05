@@ -6,15 +6,6 @@ import axios from "axios";
 const host = process.env.NEXT_PUBLIC_BE_HOST;
 const port = ":" + process.env.NEXT_PUBLIC_BE_PORT;
 
-export function getClasses() {
-  return axios.get(`${host}${port}/classnames/getAll`);
-}
-
-export function getHeroes() {
-  return axios.get(`${host}${port}/heroes/getAll`);
-}
-
-
-export function getHeroById(id) {
-  return axios.get(`${host}${port}/heroes/get/${id}`);
+export function edit(hero, id) {
+  return axios.put(`${host}${port}/heroes/edit/${id}`, hero);
 }
