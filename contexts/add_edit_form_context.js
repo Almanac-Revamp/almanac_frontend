@@ -1,8 +1,6 @@
 import _ from "lodash";
 import { makeAutoObservable } from "mobx";
-import { useRouter } from "next/dist/client/router";
-import Router from "next/dist/server/router";
-import React, { createContext } from "react";
+import { createContext } from "react";
 import { getClasses, getHeroById } from "../services/get";
 import { upload } from "../services/post";
 import { edit } from "../services/put";
@@ -102,10 +100,10 @@ class Scaling {
   key;
   value;
 
-  constructor(data){
+  constructor(data, value){
     if(typeof data === 'string'){
       this.key = data;
-      this.value = "";
+      this.value = value ?? "";
     } else {
       this.key = data.key ?? data.name ?? "";
       this.value = data.value ?? "";
@@ -252,8 +250,8 @@ class Hero {
     this.name = data.name ?? '';
     this.title = data.title ?? '';
     this.resource = data.resource ?? 'Mana';
-    this.attackType = data.attackType ?? '';
-    this.className = data.className ?? '';
+    this.attackType = data.attackType ?? 'Melee';
+    this.className = data.className ?? 'Assassin';
     this.stats = data.stats ? _.map(data.stats, (stat) => new Stats(stat)) : [
       new Stats('Health'), new Stats('Mana'), new Stats('Stamina'), new Stats('Health Regen'),
       new Stats('Mana Regen'), new Stats('Stamina Regen'), new Stats('Secondary Bar'), new Stats('Armor'),
@@ -261,10 +259,11 @@ class Hero {
       new Stats('Range')
     ];
     this.attackSpeed = data.attackSpeed ? _.map(data.attackSpeed, (stat) => new Scaling(stat)) : [
-      new Scaling('Base Attack Speed'), new Scaling('Missile Speed'), new Scaling('Attack Speed Ratio'), new Scaling('Bonus Attack Speed')
+      new Scaling('Base Attack Speed'), new Scaling('Missile Speed', 'N/A'), new Scaling('Attack Speed Ratio', 'N/A'), new Scaling('Bonus Attack Speed')
     ];
     this.ratings = data.ratings ? _.map(data.ratings, (stat) => new Scaling(stat)) : [
-      new Scaling('Damage'), new Scaling('Toughness'), new Scaling('Control'), new Scaling('Mobility'), new Scaling('Utility'), new Scaling('Difficulty')
+      new Scaling('Damage', '1'), new Scaling('Toughness', '1'), new Scaling('Control', '1'),
+      new Scaling('Mobility', '1'), new Scaling('Utility', '1'), new Scaling('Difficulty', '1')
     ];
     this.abilities = data.abilities ? _.map(data.abilities, (stat) => new Ability(stat)) : [
       new Ability('P'), new Ability('Q'), new Ability('W'), new Ability('E'), new Ability('R')
@@ -308,9 +307,8 @@ class AddEditFormContext {
         const res = await getHeroById(id);
         if(res.status === 200){
           this.setValue('hero', new Hero(res.data));
-          console.log(res.data)
-          console.log(this.hero)
-          // this.setValue('hero', res.data);
+          // console.log(res.data)
+          // console.log(this.hero)
           this.setValue('isLoad', true);
         }
       } catch (err) {
@@ -346,7 +344,6 @@ class AddEditFormContext {
 
   async edit(router, id) {
     try {
-      console.log(this.hero)
       const res = await edit(this.hero, id);
       if(res.status === 200){
         router.push(`/show/${id}`);
