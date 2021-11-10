@@ -1,8 +1,13 @@
+import { NextSeo } from "next-seo"
+import { Fragment } from "react"
 import AddEditForm from "../../components/add_edit_form"
 
 export default function EditHero({ id }) {
   return (
-    <AddEditForm id={id} />
+    <Fragment>
+      <NextSeo title="Edit | Almanac Database" />
+      <AddEditForm id={id} />
+    </Fragment>
   )
 }
 
