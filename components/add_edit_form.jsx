@@ -79,6 +79,10 @@ export default function AddEditForm({ id }) {
   }
 
   useEffect(() => {
+    context.setValue('toggleStat', false);
+    context.setValue('toggleAs', false);
+    context.setValue('toggleRatings', false);
+    context.setValue('abilDis', 'P');
     context.prepareHero(id);
     context.prepareClasses();
   }, [])
