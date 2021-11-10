@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
         <link href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" rel="stylesheet" />
-        <title>Almanac – Hero Database</title>
+        <title>Almanac Database</title>
       </Head>
       <NavBar />
       <Component {...pageProps} />

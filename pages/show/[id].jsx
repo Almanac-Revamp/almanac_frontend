@@ -8,12 +8,14 @@ import StatsCard from "../../components/stats_card";
 import AttackSpeedCard from "../../components/attack_speed_card";
 import RatingsCard from "../../components/ratings_card";
 import { NextSeo } from "next-seo";
+import { useRouter } from "next/dist/client/router";
 
 export default function ShowHero({ id }) {
   const context = useContext(showHeroContext);
+  const router = useRouter();
 
   const deleteHero = () => {
-
+    context.deleteHero(id, router);
   }
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export default function ShowHero({ id }) {
     <Observer>
       {() => (
       <Fragment>
-        <NextSeo title={context.isLoad ? `Almanac – ${context.hero.name}, ${context.hero.title}` : "Almanac – Hero Database"} />
+        <NextSeo title={context.isLoad ? `${context.hero.name} – ${context.hero.title} | Almanac Database` : "Almanac Database"} />
         {context.isLoad && (
           <Fragment>
             <div className="grid grid-cols-5 mx-16">
