@@ -9,6 +9,7 @@ import AttackSpeedCard from "../../components/attack_speed_card";
 import RatingsCard from "../../components/ratings_card";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
+import { getThumbnail } from "../../services/get";
 
 export default function ShowHero({ id }) {
   const context = useContext(showHeroContext);
@@ -37,7 +38,8 @@ export default function ShowHero({ id }) {
             <div className="grid grid-cols-5 mx-16">
               <div className="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
                 <div className="w-full">
-                  <img className="rounded-3xl w-3/4 mb-7 object-cover object-center" src="/images/default.jpg" />
+                  <img className="rounded-3xl w-3/4 mb-7 object-cover object-center"
+                  src={context.hero.image ? context.hero.image : '/images/default.jpg'} />
                 </div>
                 <ul v-if="loaded">
                   <li className="text-paleViolet text-3xl font-bold uppercase">

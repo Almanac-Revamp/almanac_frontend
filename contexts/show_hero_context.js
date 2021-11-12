@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { makeAutoObservable } from "mobx";
-import { getHeroById } from "../services/get";
+import { getHeroById, getThumbnail } from "../services/get";
 import { deleteHero } from "../services/delete";
 
 class ShowHeroContext {
@@ -8,12 +8,16 @@ class ShowHeroContext {
   mode;
   isLoad;
   abilDis;
+  isLoad;
+  image;
 
   constructor() {
     this.hero = null;
     this.mode = true;
     this.isLoad = false;
     this.abilDis = 'P';
+    this.isLoad = false;
+    this.image = '/images/default.jpg';
     makeAutoObservable(this);
   }
 

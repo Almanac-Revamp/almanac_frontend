@@ -14,6 +14,10 @@ export function getHeroes() {
   return axios.get(`${host}${port}/heroes/getAll`);
 }
 
+// export function getThumbnail(picName) {
+//   return axios.get(`${host}${port}/heroes/getThumbnail/${picName}`);
+// }
+
 
 export function getHeroById(id) {
   return axios.get(`${host}${port}/heroes/get/${id}`);

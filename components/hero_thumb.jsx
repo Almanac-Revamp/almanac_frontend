@@ -5,7 +5,9 @@ export default function HeroThumb({ hero }) {
     <Link href={`/show/${hero._id}`}>
       <div className="flex py-3 px-6 cursor-pointer transition duration-150 rounded-lg hover:bg-PB">
         <div>
-          <img className="rounded-3xl w-24 h-24 object-cover object-center" src="/images/default.jpg" alt="Default" />
+          <img className="rounded-3xl w-24 h-24 object-cover object-center"
+          src={hero.image ? hero.image : '/images/default.jpg'}
+          alt="Default" />
         </div>
         <div className="pl-3 pt-2">
           <ul className="text-paleViolet">

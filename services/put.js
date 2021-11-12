@@ -7,5 +7,11 @@ const host = process.env.NEXT_PUBLIC_BE_HOST;
 const port = ":" + process.env.NEXT_PUBLIC_BE_PORT;
 
 export function edit(hero, id) {
+  // const form = new FormData();
+  // const namedImage = new File([image], hero.name + '.' + image.name.slice(image.name.lastIndexOf(".") + 1, image.length), {type: image.type});
+  // hero.thumbName = namedImage.name;
+  // console.log(namedImage)
+  // form.append('thumbnail', namedImage);
+  // form.append('hero', JSON.stringify(hero));
   return axios.put(`${host}${port}/heroes/edit/${id}`, hero);
 }

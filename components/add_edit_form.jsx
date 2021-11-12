@@ -2,7 +2,7 @@ import classNames from "classnames";
 import _ from "lodash";
 import { Observer } from "mobx-react-lite";
 import { useRouter } from "next/dist/client/router";
-import { Fragment, useContext, useEffect } from "react"
+import { Fragment, useContext, useEffect, useRef } from "react"
 import { addEditFormContext } from "../contexts/add_edit_form_context"
 import EditAbilityCard from "./edit_ability_card";
 
@@ -93,11 +93,12 @@ export default function AddEditForm({ id }) {
         <div className="grid grid-cols-5 mx-16">
           <div className="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
             <div className="w-full">
-              <img src="/images/default.jpg" className="rounded-3xl w-3/4 object-cover object-center" />
+              <img src={context.hero.image} className="rounded-3xl object-cover w-56 h-56" />
               <div className="ml-48 -mt-8 relative">
-                <div id="spin" className="h-14 w-14 rounded-full flex flex-wrap justify-center content-center border-darkViolet text-paleViolet cursor-pointer" style={{borderWidth: "1.8rem"}}>
+                <label htmlFor="myFile" id="spin" className="h-14 w-14 rounded-full flex flex-wrap justify-center content-center border-darkViolet text-paleViolet cursor-pointer"
+                style={{borderWidth: "1.8rem"}}>
                   <i className="fas fa-sync-alt text-2xl" />
-                </div>
+                </label>
               </div>
             </div>
             <div className="flex flex-col gap-y-3 mt-2">
@@ -147,6 +148,7 @@ export default function AddEditForm({ id }) {
                   Save
                 </button>
               </div>
+              <input type="file" id="myFile" className="invisible h-0" onChange={e => context.changeImage(e)} accept=".jpg, .jpeg, .png" />
             </div>
           </div>
           <div className="w-full mt-5 col-span-2 order-2">
