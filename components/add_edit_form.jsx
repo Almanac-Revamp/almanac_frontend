@@ -2,7 +2,7 @@ import classNames from "classnames";
 import _ from "lodash";
 import { Observer } from "mobx-react-lite";
 import { useRouter } from "next/dist/client/router";
-import { Fragment, useContext, useEffect, useRef } from "react"
+import { Fragment, useContext, useEffect } from "react"
 import { addEditFormContext } from "../contexts/add_edit_form_context"
 import EditAbilityCard from "./edit_ability_card";
 
