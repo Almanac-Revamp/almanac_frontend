@@ -15,7 +15,7 @@ export function getHeroes() {
 }
 
 export function getThumbnail(picName) {
-  return picName ? `${host}${port}/images/thumbnails/${picName}` : `${host}${port}/images/default.jpg`;
+  return `${host}${port}/images/${picName ? `thumbnails/${picName}` : 'default.jpg'}`;
 }
 
 export function getIcon(picName) {
