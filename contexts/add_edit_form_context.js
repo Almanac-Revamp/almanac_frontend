@@ -357,7 +357,7 @@ class AddEditFormContext {
 
   async upload(router) {
     try {
-      const res = await upload(this.hero, this.rawImage, this.hero.thumbName);
+      const res = await upload(this.hero, this.rawImage);
       if(res.status === 200){
         router.push(`/`);
       }

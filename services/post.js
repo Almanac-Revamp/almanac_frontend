@@ -6,7 +6,7 @@ import axios from "axios";
 const host = process.env.NEXT_PUBLIC_BE_HOST;
 const port = ":" + process.env.NEXT_PUBLIC_BE_PORT;
 
-export function upload(hero, image, oldImageName) {
+export function upload(hero, image) {
   const form = new FormData();
   if(image){
     const namedImage = new File([image], hero.name + '.' + image.name.slice(image.name.lastIndexOf(".") + 1, image.length), {type: image.type});
@@ -14,7 +14,6 @@ export function upload(hero, image, oldImageName) {
   }
   form.append('thumbnail', image ? namedImage : null);
   form.append('hero', JSON.stringify(hero));
-  form.append('oldImageName', oldImageName);
   return axios.post(`${host}${port}/heroes/upload`, form, {
     headers: {
       'Content-Type': 'multipart/form-data'
