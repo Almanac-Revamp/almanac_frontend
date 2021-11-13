@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { getThumbnail } from "../services/get"
 
 export default function HeroThumb({ hero }) {
   return (
@@ -6,7 +7,7 @@ export default function HeroThumb({ hero }) {
       <div className="flex py-3 px-6 cursor-pointer transition duration-150 rounded-lg hover:bg-PB">
         <div>
           <img className="rounded-3xl w-24 h-24 object-cover object-center"
-          src={hero.image ? hero.image : '/images/default.jpg'}
+          src={hero.thumbName ? getThumbnail(hero.thumbName) : '/images/default.jpg'}
           alt="Default" />
         </div>
         <div className="pl-3 pt-2">

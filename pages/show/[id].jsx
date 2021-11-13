@@ -9,7 +9,6 @@ import AttackSpeedCard from "../../components/attack_speed_card";
 import RatingsCard from "../../components/ratings_card";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
-import { getThumbnail } from "../../services/get";
 
 export default function ShowHero({ id }) {
   const context = useContext(showHeroContext);
@@ -38,8 +37,8 @@ export default function ShowHero({ id }) {
             <div className="grid grid-cols-5 mx-16">
               <div className="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
                 <div className="w-full">
-                  <img className="rounded-3xl w-3/4 mb-7 object-cover object-center"
-                  src={context.hero.image ? context.hero.image : '/images/default.jpg'} />
+                  <img className="rounded-3xl object-cover w-56 h-56 mb-7"
+                  src={context.image} />
                 </div>
                 <ul v-if="loaded">
                   <li className="text-paleViolet text-3xl font-bold uppercase">
@@ -69,7 +68,6 @@ export default function ShowHero({ id }) {
                     <button key={index} className={`ml-2 mb-2 font-bold text-base px-5 py-1 focus:outline-none rounded-full mx-auto hover:bg-lightPB hover:text-darkPB transition duration-100
                     ${ability.slot != context.abilDis ? 'bg-PB text-paleViolet' : 'bg-lightPB text-darkPB'}`}
                     onClick={() => context.setValue('abilDis', ability.slot)}
-                    key={ability.name}
                     >{ ability.slot }</button>
                   ))}
                 </div>

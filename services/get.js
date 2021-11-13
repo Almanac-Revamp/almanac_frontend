@@ -14,10 +14,13 @@ export function getHeroes() {
   return axios.get(`${host}${port}/heroes/getAll`);
 }
 
-// export function getThumbnail(picName) {
-//   return axios.get(`${host}${port}/heroes/getThumbnail/${picName}`);
-// }
+export function getThumbnail(picName) {
+  return `${host}${port}/images/thumbnails/${picName}`;
+}
 
+export function getIcon(picName) {
+  return `${host}${port}/images/icons/${picName}`;
+}
 
 export function getHeroById(id) {
   return axios.get(`${host}${port}/heroes/get/${id}`);

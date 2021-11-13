@@ -4,6 +4,7 @@ import { Observer } from "mobx-react-lite";
 import { useRouter } from "next/dist/client/router";
 import { Fragment, useContext, useEffect } from "react"
 import { addEditFormContext } from "../contexts/add_edit_form_context"
+import { getIcon } from "../services/get";
 import EditAbilityCard from "./edit_ability_card";
 
 const StatBlock = ({ stats, resource, getIcon }) => {
@@ -18,7 +19,7 @@ const StatBlock = ({ stats, resource, getIcon }) => {
                 {stat.name !== 'Stamina' && stat.name !== 'Stamina Regen' && stat.name != 'Secondary Bar' && (
                   <div className={`text-paleViolet text-sm uppercase w-full`}>
                     <div className="flex flex-col gap-y-3 px-4 py-2 font-bold">
-                      <div className="flex items-center"><img src={getIcon(stat.name)} className="w-4 h-4 mr-2"/>{ stat.name }:</div>
+                      <div className="flex items-center"><img src={getIcon(stat.name == 'Secondary Bar' ? 'mana_regen.png' : `${_.snakeCase(stat.name)}.png`)} className="w-4 h-4 mr-2"/>{ stat.name }:</div>
                       <div className="flex w-full gap-x-3">
                         <div>Base: <input type="text" value={stat.base} onChange={(e) => stat.setValue('base', e.target.value)} className="input w-full"/></div>
                         {stat.name != 'Range' && stat.name != 'Move Speed' && stat.name != 'Crit Damage' && stat.name != 'Secondary Bar' && (<div>Growth: <input type="text" value={stat.growth} onChange={(e) => stat.setValue('growth', e.target.value)} className="input w-full" /></div>)}
@@ -74,10 +75,6 @@ export default function AddEditForm({ id }) {
   const context = useContext(addEditFormContext);
   const router = useRouter();
 
-  const getIcon = (head) => {
-    return head == 'Secondary Bar' ? `/images/icons/mana_regen.png` : `/images/icons/${_.snakeCase(head)}.png`;
-  }
-
   useEffect(() => {
     context.setValue('toggleStat', false);
     context.setValue('toggleAs', false);
@@ -93,7 +90,7 @@ export default function AddEditForm({ id }) {
         <div className="grid grid-cols-5 mx-16">
           <div className="pt-14 col-span-1 order-1 sticky top-16 mb-auto">
             <div className="w-full">
-              <img src={context.hero.image} className="rounded-3xl object-cover w-56 h-56" />
+              <img src={context.image} className="rounded-3xl object-cover w-56 h-56" />
               <div className="ml-48 -mt-8 relative">
                 <label htmlFor="myFile" id="spin" className="h-14 w-14 rounded-full flex flex-wrap justify-center content-center border-darkViolet text-paleViolet cursor-pointer"
                 style={{borderWidth: "1.8rem"}}>
@@ -180,7 +177,7 @@ export default function AddEditForm({ id }) {
               </div>
             )}
             <div className="bg-darkViolet text-paleViolet text-2xl font-bold my-5 flex justify-between items-center cursor-pointer transition hover:bg-PB py-5 px-5 rounded-lg" onClick={() => context.setValue('toggleAs', !context.toggleAs)}>
-            <span><img src={getIcon('Attack Speed')} className="inline w-5 h-5 mr-3 -mt-1"/>Attack Speed</span>
+            <span><img src={getIcon('attack_speed.png')} className="inline w-5 h-5 mr-3 -mt-1"/>Attack Speed</span>
             <i className={classNames("fas fa-angle-down mr-2", {"transform rotate-180": context.toggleAs})} /></div>
             {context.toggleAs && (
               <div className="flex flex-wrap gap-y-1 h-26 overflow-auto bg-darkViolet rounded-xl py-3">

@@ -27,9 +27,13 @@ class ShowHeroContext {
 
   async prepareHero(id) {
     try {
+      this.setValue('image', '/images/default.jpg');
       const res = await getHeroById(id);
       if(res.status === 200){
         this.setValue('hero', res.data);
+        if(this.hero.thumbName) {
+          this.setValue('image', getThumbnail(this.hero.thumbName));
+        }
         this.setValue('isLoad', true);
       }
     } catch (err) {

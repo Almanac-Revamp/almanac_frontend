@@ -245,7 +245,8 @@ class Hero {
   attackSpeed;
   ratings;
   abilities;
-  image;
+  thumbName;
+  // image;
 
   constructor(data) {
     this.name = data.name ?? '';
@@ -253,7 +254,8 @@ class Hero {
     this.resource = data.resource ?? 'Mana';
     this.attackType = data.attackType ?? 'Melee';
     this.className = data.className ?? 'Assassin';
-    this.image = data.image ?? '/images/default.jpg';
+    this.thumbName = data.thumbName ?? '';
+    // this.image = data.image ?? '/images/default.jpg';
     this.stats = data.stats ? _.map(data.stats, (stat) => new Stats(stat)) : [
       new Stats('Health'), new Stats('Mana'), new Stats('Stamina'), new Stats('Health Regen'),
       new Stats('Mana Regen'), new Stats('Stamina Regen'), new Stats('Secondary Bar'), new Stats('Armor'),
@@ -286,6 +288,8 @@ class AddEditFormContext {
   toggleStat;
   toggleAs;
   toggleRatings;
+  image;
+  rawImage;
 
   constructor() {
     this.hero = null;
@@ -296,6 +300,8 @@ class AddEditFormContext {
     this.toggleStat = false;
     this.toggleAs = false;
     this.toggleStat = false;
+    this.image = '/images/default.jpg';
+    this.rawImage = null;
     makeAutoObservable(this);
   }
 
@@ -306,12 +312,13 @@ class AddEditFormContext {
   async prepareHero(id) {
     if(id){
       try {
+        this.setValue('image', '/images/default.jpg');
         const res = await getHeroById(id);
         if(res.status === 200){
           this.setValue('hero', new Hero(res.data));
-          // console.log(res.data)
-          // console.log(this.hero)
-          // this.setUpImage(this.hero.thumbName)
+          if(this.hero.thumbName) {
+            this.setValue('image', getThumbnail(this.hero.thumbName));
+          }
           this.setValue('isLoad', true);
         }
       } catch (err) {
@@ -323,40 +330,14 @@ class AddEditFormContext {
     }
   }
 
-//   dataURLtoFile(dataurl, filename) {
-//     var arr = dataurl.split(','),
-//         mime = arr[0].match(/:(.*?);/)[1],
-//         bstr = atob(arr[1]), 
-//         n = bstr.length, 
-//         u8arr = new Uint8Array(n);
-        
-//     while(n--){
-//         u8arr[n] = bstr.charCodeAt(n);
-//     }
-//     return new File([u8arr], filename, {type: mime});
-// }
-
-  // async setUpImage(picName) {
-  //   this.setValue('image', '/images/default.jpg');
-  //   const res = await getThumbnail(picName);
-  //   if(res.status === 200){
-  //     this.dataURLtoFile(res.data, )
-  //     this.setValue('rawImage', res.data);
-  //     // var reader = new FileReader();
-  //     // reader.onload = (e) => {
-  //     //   this.setValue('image', e.target.result);
-  //     // };
-  //     // reader.readAsDataURL(res.data);
-  //   }
-  // }
-
   changeImage(e) {
     const file = e.target.files[0];
     if(file){
+      this.setValue('rawImage', file);
       if (file.type.includes("image")) {
         var reader = new FileReader();
         reader.onload = (e) => {
-          this.hero.setValue('image', e.target.result);
+          this.setValue('image', e.target.result);
         };
         reader.readAsDataURL(file);
       } else {
@@ -389,7 +370,7 @@ class AddEditFormContext {
 
   async edit(router, id) {
     try {
-      const res = await edit(this.hero, id);
+      const res = await edit(this.hero, this.rawImage, id);
       if(res.status === 200){
         router.push(`/show/${id}`);
       }

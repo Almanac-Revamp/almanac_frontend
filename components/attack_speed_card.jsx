@@ -1,10 +1,11 @@
 import { Fragment } from "react";
+import { getIcon } from "../services/get";
 
 export default function AttackSpeedCard({ mode, attackSpeed }) {
   return (
     <Fragment>
       <div className="text-paleViolet text-2xl font-bold my-3 flex items-center">
-        <img src="/images/icons/attack_speed.png" className="inline w-5 h-5 mr-3"/>
+        <img src={getIcon('attack_speed.png')} className="inline w-5 h-5 mr-3"/>
         Attack Speed
       </div>
       <div className="flex flex-wrap gap-y-1 h-26 overflow-auto bg-darkViolet rounded-xl py-3">
