@@ -300,7 +300,7 @@ class AddEditFormContext {
     this.toggleStat = false;
     this.toggleAs = false;
     this.toggleStat = false;
-    this.image = '/images/default.jpg';
+    this.image = '';
     this.rawImage = null;
     makeAutoObservable(this);
   }
@@ -312,13 +312,10 @@ class AddEditFormContext {
   async prepareHero(id) {
     if(id){
       try {
-        this.setValue('image', '/images/default.jpg');
         const res = await getHeroById(id);
         if(res.status === 200){
           this.setValue('hero', new Hero(res.data));
-          if(this.hero.thumbName) {
-            this.setValue('image', getThumbnail(this.hero.thumbName));
-          }
+          this.setValue('image', getThumbnail(this.hero.thumbName));
           this.setValue('isLoad', true);
         }
       } catch (err) {
