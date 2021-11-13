@@ -11,7 +11,6 @@ export function edit(hero, image, oldImageName, id) {
   if(image){
     const namedImage = new File([image], hero.name + '.' + image.name.slice(image.name.lastIndexOf(".") + 1, image.length), {type: image.type});
     hero.thumbName = namedImage.name;
-    console.log(namedImage)
   }
   form.append('thumbnail', image ? namedImage : null);
   form.append('hero', JSON.stringify(hero));
