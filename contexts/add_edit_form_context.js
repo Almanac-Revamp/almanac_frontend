@@ -323,6 +323,7 @@ class AddEditFormContext {
       }
     } else {
       this.setValue('hero', new Hero({}));
+      this.setValue('image', getThumbnail());
       this.setValue('isLoad', true);
     }
   }
@@ -356,7 +357,7 @@ class AddEditFormContext {
 
   async upload(router) {
     try {
-      const res = await upload(this.hero);
+      const res = await upload(this.hero, this.rawImage, this.hero.thumbName);
       if(res.status === 200){
         router.push(`/`);
       }
@@ -367,7 +368,7 @@ class AddEditFormContext {
 
   async edit(router, id) {
     try {
-      const res = await edit(this.hero, this.rawImage, id);
+      const res = await edit(this.hero, this.rawImage, this.hero.thumbName, id);
       if(res.status === 200){
         router.push(`/show/${id}`);
       }
