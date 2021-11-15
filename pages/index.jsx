@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useRef } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { homeContext } from "../contexts/home_context";
 import _ from 'lodash';
 import { Observer } from "mobx-react-lite";
@@ -6,10 +6,6 @@ import HeroThumb from "../components/hero_thumb";
 
 export default function Home() {
   const context = useContext(homeContext);
-
-  const selectClass = useRef();
-  const selectType = useRef();
-  const input = useRef();
 
   useEffect(() => {
     context.prepareClasses();
@@ -21,13 +17,13 @@ export default function Home() {
       {() => (
         <Fragment>
           <div className="navButton">
-            <input ref={input} placeholder="SEARCH" className="input mt-3 mr-3 ml-4" onKeyDown={(e) => {
+            <input placeholder="SEARCH" className="input mt-3 mr-3 ml-4" value={context.searchWord} onChange={(e) => context.setValue('searchWord', e.target.value)}
+            onKeyDown={(e) => {
               if(e.key === 'Enter'){
-                context.setValue('searchWord', e.target.value);
                 context.prepareFilteredHeroes();
               }
             }} />
-            <select ref={selectClass} className="input mr-3" onChange={(e) => {
+            <select className="input mr-3" value={context.chosenClass} onChange={(e) => {
               _.forEach(context.classes, heroClass => {
                 if(e.target.value === heroClass.archetype){
                   let types = [];
@@ -39,7 +35,6 @@ export default function Home() {
                   return;
                 }
               })
-              console.log('here')
               context.setValue('chosenClass', e.target.value);
               context.prepareFilteredHeroes();
             }}>
@@ -55,7 +50,7 @@ export default function Home() {
                 )
               })}
             </select>
-            <select ref={selectType} className="input mr-3" onChange={(e) => {
+            <select className="input mr-3" value={context.range} onChange={(e) => {
               context.setValue('range', e.target.value);
               context.prepareFilteredHeroes();
             }}>
@@ -65,9 +60,9 @@ export default function Home() {
             </select>
             <button className="mr-3 font-bold bg-PB text-paleViolet text-base px-3 py-1 focus:outline-none rounded-full mx-auto hover:bg-lightPB hover:text-darkPB transition duration-100"
             onClick={() => {
-              input.current.value = '';
-              selectClass.current.firstElementChild.selected = true;
-              selectType.current.firstElementChild.selected = true;
+              context.setValue('searchWord', '');
+              context.setValue('chosenClass', '');
+              context.setValue('range', '');
               context.prepareHeroes();
             }}>Clear</button>
             Total Heroes: { context.heroes.length }
