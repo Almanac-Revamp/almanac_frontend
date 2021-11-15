@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { makeAutoObservable } from "mobx";
-import { getClasses, getHeroes } from "../services/get";
+import { getClasses, getFilteredHeroes, getHeroes } from "../services/get";
 
 class HomeContext {
   classes;
@@ -36,6 +36,17 @@ class HomeContext {
   async prepareHeroes() {
     try {
       const res = await getHeroes();
+      if(res.status === 200){
+        this.setValue('heroes', res.data);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async prepareFilteredHeroes() {
+    try {
+      const res = await getFilteredHeroes(this.searchWord, this.chosenClass, this.range);
       if(res.status === 200){
         this.setValue('heroes', res.data);
       }

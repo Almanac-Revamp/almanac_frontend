@@ -14,15 +14,35 @@ export default function Home() {
   useEffect(() => {
     context.prepareClasses();
     context.prepareHeroes();
-  }, [context])
+  }, [])
 
   return (
     <Observer>
       {() => (
         <Fragment>
           <div className="navButton">
-            <input ref={input} placeholder="SEARCH" className="input mt-3 mr-3 ml-4" onChange={(e) => context.setValue('searchWord', e.target.value)} />
-            <select ref={selectClass} className="input mr-3" onChange={(e) => context.setValue('chosenClass', e.target.value)}>
+            <input ref={input} placeholder="SEARCH" className="input mt-3 mr-3 ml-4" onKeyDown={(e) => {
+              if(e.key === 'Enter'){
+                context.setValue('searchWord', e.target.value);
+                context.prepareFilteredHeroes();
+              }
+            }} />
+            <select ref={selectClass} className="input mr-3" onChange={(e) => {
+              _.forEach(context.classes, heroClass => {
+                if(e.target.value === heroClass.archetype){
+                  let types = [];
+                  _.forEach(heroClass.subtypes, item => {
+                    types.push(item);
+                  })
+                  context.setValue('chosenClass', types);
+                  context.prepareFilteredHeroes();
+                  return;
+                }
+              })
+              console.log('here')
+              context.setValue('chosenClass', e.target.value);
+              context.prepareFilteredHeroes();
+            }}>
               <option className="text-darkViolet font-bold" value=''>Classes</option>
               {_.map(context.classes, (heroClass, index) => {
                 return (
@@ -35,7 +55,10 @@ export default function Home() {
                 )
               })}
             </select>
-            <select ref={selectType} className="input mr-3" onChange={(e) => context.setValue('range', e.target.value)}>
+            <select ref={selectType} className="input mr-3" onChange={(e) => {
+              context.setValue('range', e.target.value);
+              context.prepareFilteredHeroes();
+            }}>
               <option className="text-darkViolet font-bold" value="">Attack Type</option>
               <option className="text-darkViolet" value="Melee">Melee</option>
               <option className="text-darkViolet" value="Ranged">Ranged</option>
@@ -45,6 +68,7 @@ export default function Home() {
               input.current.value = '';
               selectClass.current.firstElementChild.selected = true;
               selectType.current.firstElementChild.selected = true;
+              context.prepareHeroes();
             }}>Clear</button>
             Total Heroes: { context.heroes.length }
           </div>
