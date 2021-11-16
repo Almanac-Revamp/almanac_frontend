@@ -17,14 +17,9 @@ export function getHeroes() {
 
 export function getFilteredHeroes(searchWord, chosenClass, range) {
   let cc = '';
-  if(isArray(chosenClass)){
-    _.forEach(chosenClass, item => {
-      cc = cc.concat(`&chosenClass=${item}`);
-    })
-  }
-  if(typeof chosenClass === 'string'){
-    cc = `&chosenClass=${chosenClass}`;
-  }
+   _.forEach(chosenClass, item => {
+    cc = cc.concat(`&chosenClass=${item}`);
+  })
   return axios.get(`${host}${port}/heroes/getFiltered?searchWord=${searchWord}${cc}&range=${range}`);
 }
 

@@ -9,7 +9,11 @@ export default function Home() {
 
   useEffect(() => {
     context.prepareClasses();
-    context.prepareHeroes();
+    if(context.searchWord === '' && context.range === '' && context.chosenClass === ''){
+      context.prepareHeroes();
+    } else {
+      context.prepareFilteredHeroes();
+    }
   }, [])
 
   return (
@@ -24,17 +28,20 @@ export default function Home() {
               }
             }} />
             <select className="input mr-3" value={context.chosenClass} onChange={(e) => {
+              const match = false;
               _.forEach(context.classes, heroClass => {
                 if(e.target.value === heroClass.archetype){
                   let types = [];
                   _.forEach(heroClass.subtypes, item => {
                     types.push(item);
                   })
-                  context.setValue('chosenClass', types);
-                  context.prepareFilteredHeroes();
-                  return;
+                  context.setValue('classArray', types);
+                  match = true;
                 }
               })
+              if(!match){
+                context.setValue('classArray', [e.target.value]);
+              }
               context.setValue('chosenClass', e.target.value);
               context.prepareFilteredHeroes();
             }}>

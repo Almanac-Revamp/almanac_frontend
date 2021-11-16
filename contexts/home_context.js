@@ -8,6 +8,7 @@ class HomeContext {
   searchWord;
   range;
   chosenClass;
+  classArray;
 
   constructor() {
     this.classes = [];
@@ -15,6 +16,7 @@ class HomeContext {
     this.searchWord = '';
     this.range = '';
     this.chosenClass = '';
+    this.classArray = [];
     makeAutoObservable(this);
   }
 
@@ -46,7 +48,7 @@ class HomeContext {
 
   async prepareFilteredHeroes() {
     try {
-      const res = await getFilteredHeroes(this.searchWord, this.chosenClass, this.range);
+      const res = await getFilteredHeroes(this.searchWord, this.classArray, this.range);
       if(res.status === 200){
         this.setValue('heroes', res.data);
       }
