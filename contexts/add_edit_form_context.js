@@ -219,15 +219,17 @@ class Ability {
   }
 
   shiftLeft = (index) => {
-    let buffer = this.scaling[index];
-    this.scaling[index] = this.scaling[index - 1];
-    this.scaling[index - 1] = buffer;
+    const buffer1 = new Scaling({key: this.scaling[index].key, value: this.scaling[index].value});
+    const buffer2 = new Scaling({key: this.scaling[index - 1].key, value: this.scaling[index - 1].value});
+    this.scaling[index] = buffer2;
+    this.scaling[index - 1] = buffer1;
   }
 
   shiftRight = (index) => {
-    let buffer = this.scaling[index];
-    this.scaling[index] = this.scaling[index + 1];
-    this.scaling[index + 1] = buffer;
+    const buffer1 = new Scaling({key: this.scaling[index].key, value: this.scaling[index].value});
+    const buffer2 = new Scaling({key: this.scaling[index + 1].key, value: this.scaling[index + 1].value});
+    this.scaling[index] = buffer2;
+    this.scaling[index + 1] = buffer1;
   }
 
   delItem = (key, index) => {
