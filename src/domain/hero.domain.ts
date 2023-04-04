@@ -17,13 +17,13 @@ export enum AttackType {
 
 export enum StatList {
   HEALTH = 'Health',
-  MANA = 'Health',
-  STAMINA = 'Health',
+  MANA = 'Mana',
+  STAMINA = 'Stamina',
   HEALTH_REGEN = 'Health Regen',
   MANA_REGEN = 'Mana Regen',
   STAMINA_REGEN = 'Stamina Regen',
   SECONDARY_BAR = 'Secondary Bar',
-  Armor = 'Armor',
+  ARMOR = 'Armor',
   ATTACK_DAMAGE = 'Attack Damage',
   MAGIC_RESIST = 'Magic Resist',
   CRIT_DAMAGE = 'Crit Damage',

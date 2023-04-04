@@ -23,40 +23,32 @@ export const StatBlock = observer(
 
     return (
       <>
-        {_.map(stats, (stat, index) => {
-          switch (resource) {
-            case ResourceType.MANA:
-              return (
-                <Fragment key={index}>
-                  {!_.includes(prevent, stat.name) && (
-                    <div className={`text-paleViolet text-sm uppercase w-full`}>
-                      <div className="flex flex-col px-4 py-2 font-bold gap-y-3">
-                        <div className="flex items-center">
-                          <img
-                            src={getIcon(stat.name == 'Secondary Bar' ? 'mana_regen.png' : `${_.snakeCase(stat.name)}.png`)}
-                            className="w-4 h-4 mr-2"
-                          />
-                          {stat.name}:
-                        </div>
-                        <div className="flex w-full gap-x-3">
-                          <div>
-                            {'Base: '}
-                            <input {...register(`stats.${index}.base`)} className="w-full input" />
-                          </div>
-                          {!_.includes([StatList.RANGE, StatList.MOVE_SPEED, StatList.CRIT_DAMAGE, StatList.SECONDARY_BAR], stat.name) && (
-                            <div>
-                              {'Growth: '}
-                              <input {...register(`stats.${index}.growth`)} className="w-full input" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
+        {_.map(stats, (stat, index) => (
+          <Fragment key={index}>
+            {!_.includes(prevent, stat.name) && (
+              <div className={`text-paleViolet text-sm uppercase w-full`}>
+                <div className="flex flex-col px-4 py-2 font-bold gap-y-3">
+                  <div className="flex items-center">
+                    <img src={getIcon(stat.name == 'Secondary Bar' ? 'mana_regen.png' : `${_.snakeCase(stat.name)}.png`)} className="w-4 h-4 mr-2" />
+                    {stat.name}:
+                  </div>
+                  <div className="flex w-full gap-x-3">
+                    <div>
+                      {'Base: '}
+                      <input {...register(`stats.${index}.base`)} className="w-full input" />
                     </div>
-                  )}
-                </Fragment>
-              )
-          }
-        })}
+                    {!_.includes([StatList.RANGE, StatList.MOVE_SPEED, StatList.CRIT_DAMAGE, StatList.SECONDARY_BAR], stat.name) && (
+                      <div>
+                        {'Growth: '}
+                        <input {...register(`stats.${index}.growth`)} className="w-full input" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </Fragment>
+        ))}
       </>
     )
   }
