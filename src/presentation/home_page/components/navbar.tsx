@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-export default function NavBar() {
+export const NavBar = () => {
   return (
-    <div className="flex items-center w-full h-16 bg-darkViolet px-4 sticky top-0 z-50">
-    <div className="font-bold text-3xl px-2 py-1 text-white">
+    <div className="sticky top-0 z-50 flex items-center w-full h-16 px-4 bg-darkViolet">
+    <div className="px-2 py-1 text-3xl font-bold text-white">
       <Link href="/"> Almanac </Link>
     </div>
     <div className="navButton">
