@@ -62,6 +62,7 @@ export interface ScalingInterface {
 }
 
 export interface HeroInterface {
+  _id?: string
   name: string
   title: string
   resource: ResourceType

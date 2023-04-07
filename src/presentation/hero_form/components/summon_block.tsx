@@ -39,7 +39,11 @@ export const SummonBlock = ({
             </div>
             {summonHeaderToggle[index] && (
               <div className="flex flex-wrap">
-                <EditHeaderBlock header={unit.header} summon />
+                <EditHeaderBlock
+                  header={unit.header}
+                  summon
+                  onChange={(key, v) => setSummon(index, { ...unit, header: { ...unit.header, [key]: v } })}
+                />
               </div>
             )}
           </div>

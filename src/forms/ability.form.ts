@@ -3,8 +3,8 @@ import { AbilitySlot } from '@src/domain/ability.domain'
 import _ from 'lodash'
 import { AbilityHeader } from '@src/domain/ability.domain'
 
-export const AbilityDefaultValue: (data: HeroInterface) => HeroInterface = (data) => {
-  if (!data)
+export const HeroDefaultValue: (data: HeroInterface) => HeroInterface = (data) => {
+  if (!data) {
     return {
       name: '',
       title: '',
@@ -35,5 +35,7 @@ export const AbilityDefaultValue: (data: HeroInterface) => HeroInterface = (data
         summon: [],
       })),
     }
+  }
+  delete data?._id
   return data
 }

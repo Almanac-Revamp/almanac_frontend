@@ -49,7 +49,10 @@ export const SubAbilityBlock = ({
             </div>
             {subHeaderToggle[index] && (
               <div className="flex flex-wrap">
-                <EditHeaderBlock header={subAbil.header} />
+                <EditHeaderBlock
+                  header={subAbil.header}
+                  onChange={(key, v) => setSubAbility(index, { ...subAbil, header: { ...subAbil.header, [key]: v } })}
+                />
               </div>
             )}
           </div>

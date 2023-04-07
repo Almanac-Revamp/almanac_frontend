@@ -88,7 +88,10 @@ export default function EditAbilityCard({
             </div>
             {headerToggle && (
               <div className="flex flex-wrap">
-                <EditHeaderBlock header={ability.header} />
+                <EditHeaderBlock
+                  header={ability.header}
+                  onChange={(key, v) => setValue(`abilities.${abilityIndex}.header`, { ...ability.header, [key]: v })}
+                />
               </div>
             )}
           </div>

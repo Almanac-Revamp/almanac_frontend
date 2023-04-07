@@ -4,7 +4,15 @@ import { RichTextInput } from '@src/presentation/components/rich_text_input'
 import _ from 'lodash'
 import { SummonHeaderInterface } from '@src/domain/summon.domain'
 
-export const EditHeaderBlock = ({ header, summon }: { header: AbilityHeaderInterface | SummonHeaderInterface; summon?: boolean }) => {
+export const EditHeaderBlock = ({
+  header,
+  summon,
+  onChange,
+}: {
+  header: AbilityHeaderInterface | SummonHeaderInterface
+  summon?: boolean
+  onChange: (key: string, val: string) => void
+}) => {
   return (
     <>
       {_.map(_.keys(header), (key, index) => (
@@ -14,7 +22,7 @@ export const EditHeaderBlock = ({ header, summon }: { header: AbilityHeaderInter
             <RichTextInput
               value={header[key]}
               // onChange={(v) => header.setValue(key, v)}
-              onChange={null}
+              onChange={(v) => onChange(key, v)}
               className="header"
             />
           </div>
