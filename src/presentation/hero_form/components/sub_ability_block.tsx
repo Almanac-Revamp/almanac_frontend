@@ -9,10 +9,12 @@ import { RichTextInput } from '@src/presentation/components/rich_text_input'
 import { SecondaryButton } from '@src/presentation/components/secondary_button'
 
 export const SubAbilityBlock = ({
+  slot,
   subAbility,
   setSubAbility,
   delSubAbility,
 }: {
+  slot: string
   subAbility: SubAbilityInterface[]
   setSubAbility: UseFieldArrayUpdate<HeroInterface, `abilities.${number}.subAbility`>
   delSubAbility: UseFieldArrayRemove
@@ -33,7 +35,7 @@ export const SubAbilityBlock = ({
                 onChange={(e) => setSubAbility(index, { ...subAbil, name: e.target.value })}
               />
             </div>
-            <div>
+            <div className="flex gap-x-2">
               <SecondaryButton
                 label="Toggle Header"
                 icon={classNames('fas fa-angle-down ml-2', {
@@ -50,6 +52,7 @@ export const SubAbilityBlock = ({
             {subHeaderToggle[index] && (
               <div className="flex flex-wrap">
                 <EditHeaderBlock
+                  slot={slot}
                   header={subAbil.header}
                   onChange={(key, v) => setSubAbility(index, { ...subAbil, header: { ...subAbil.header, [key]: v } })}
                 />
@@ -70,8 +73,8 @@ export const SubAbilityBlock = ({
               />
             </div>
             <div className="grid grid-cols-2 gap-x-5">
-              {_.map(subAbil.scaling, (scale, index) => (
-                <div key={index} className="pb-3">
+              {_.map(subAbil.scaling, (scale, innerIndex) => (
+                <div key={innerIndex} className="pb-3">
                   <div className="pb-2 font-bold uppercase">
                     <div className="inline-block w-14">Key</div>
                     <input
@@ -81,7 +84,7 @@ export const SubAbilityBlock = ({
                       onChange={(e) =>
                         setSubAbility(index, {
                           ...subAbil,
-                          scaling: _.map(subAbil.scaling, (s, i) => (i === index ? { ...s, key: e.target.value } : s)),
+                          scaling: _.map(subAbil.scaling, (s, i) => (i === innerIndex ? { ...s, key: e.target.value } : s)),
                         })
                       }
                     />
@@ -89,24 +92,24 @@ export const SubAbilityBlock = ({
                   <div className="font-bold">
                     <div className="inline-block mb-1 uppercase">
                       <span className="mr-1">Value</span>
-                      {index > 0 && (
+                      {innerIndex > 0 && (
                         <i
                           className="ml-2 transition duration-200 cursor-pointer fas fa-caret-left hover:text-lightViolet"
                           onClick={() => {
-                            const tmp = subAbil.scaling[index - 1]
-                            subAbil.scaling[index - 1] = subAbil.scaling[index]
-                            subAbil.scaling[index] = tmp
+                            const tmp = subAbil.scaling[innerIndex - 1]
+                            subAbil.scaling[innerIndex - 1] = subAbil.scaling[innerIndex]
+                            subAbil.scaling[innerIndex] = tmp
                             setSubAbility(index, subAbil)
                           }}
                         ></i>
                       )}
-                      {index < subAbil.scaling.length - 1 && (
+                      {innerIndex < subAbil.scaling.length - 1 && (
                         <i
                           className="ml-2 transition duration-200 cursor-pointer fas fa-caret-right hover:text-lightViolet"
                           onClick={() => {
-                            const tmp = subAbil.scaling[index]
-                            subAbil.scaling[index] = subAbil.scaling[index + 1]
-                            subAbil.scaling[index + 1] = tmp
+                            const tmp = subAbil.scaling[innerIndex]
+                            subAbil.scaling[innerIndex] = subAbil.scaling[innerIndex + 1]
+                            subAbil.scaling[innerIndex + 1] = tmp
                             setSubAbility(index, subAbil)
                           }}
                         ></i>
@@ -114,7 +117,7 @@ export const SubAbilityBlock = ({
                       <i
                         className="ml-2 transition duration-200 cursor-pointer fas fa-times hover:text-lightViolet"
                         onClick={() => {
-                          _.pullAt(subAbil.scaling, index)
+                          _.pullAt(subAbil.scaling, innerIndex)
                           setSubAbility(index, subAbil)
                         }}
                       ></i>
@@ -125,7 +128,7 @@ export const SubAbilityBlock = ({
                         onChange={(v) =>
                           setSubAbility(index, {
                             ...subAbil,
-                            scaling: _.map(subAbil.scaling, (s, i) => (i === index ? { ...s, value: v } : s)),
+                            scaling: _.map(subAbil.scaling, (s, i) => (i === innerIndex ? { ...s, value: v } : s)),
                           })
                         }
                         className="scaling"

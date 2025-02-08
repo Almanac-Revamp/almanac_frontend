@@ -1,21 +1,46 @@
-import { quillContext } from '@src/core/lib/quill_context'
 import { observer } from 'mobx-react-lite'
-import { useContext } from 'react'
-import { Value } from 'react-quill'
 import dynamic from 'next/dynamic'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
-export const RichTextInput = observer(({ value, onChange, className }: { value?: Value; onChange: (val: string) => void; className?: string }) => {
-  const context = useContext(quillContext)
-
+export const RichTextInput = observer(({ value, onChange, className }: { value?: string; onChange: (val: string) => void; className?: string }) => {
   return (
     <ReactQuill
       value={value}
       onChange={onChange}
-      theme={context.theme}
-      modules={context.modules}
-      formats={context.formats}
+      theme="bubble"
+      modules={{
+        toolbar: [
+          ['bold'],
+          [{ script: 'super' }],
+          [
+            {
+              color: [
+                '#ff9800',
+                '#ffbd00',
+                '#f44336',
+                '#03a9f4',
+                '#4caf50',
+                '#ffeb3b',
+                '#e930e9',
+                '#1d87da',
+                '#ff855f',
+                '#687fff',
+                '#e5662b',
+                '#ff5119',
+                '#F3E5AB',
+                '#BE98D4',
+                '#7fd3f8',
+                '#A19BDA',
+                '#72a483',
+              ],
+            },
+          ],
+          ['clean'],
+        ],
+      }}
+      formats={['bold', 'italic', 'underline', 'strike', 'script', 'color']}
+      defaultValue={value}
       style={{ height: '2.65rem' }}
       className={className}
     />

@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import classNames from 'classnames'
 import 'react-quill/dist/quill.bubble.css'
 import _ from 'lodash'
@@ -46,10 +46,18 @@ export default function EditAbilityCard({
     name: `abilities.${abilityIndex}.scaling`,
     control,
   })
-  const { append: addSummon, update: setSummon } = useFieldArray({
+  const {
+    append: addSummon,
+    update: setSummon,
+    remove: delSummon,
+  } = useFieldArray({
     name: `abilities.${abilityIndex}.summon`,
     control,
   })
+
+  // useEffect(() => {
+  //   setHeaderToggle(false)
+  // }, [ability])
 
   return (
     <Observer>
@@ -59,7 +67,7 @@ export default function EditAbilityCard({
           <div className="flex flex-col pb-2">
             <div className="pr-6 text-2xl font-bold">
               <div className="inline-block mb-4 mr-4">Ability Name</div>
-              <input {...register(`abilities.${abilityIndex}.name`)} type="text" className="input" />
+              <input {...register(`abilities.${abilityIndex}.name`)} value={ability.name} type="text" className="input" />
               <div className="flex items-center justify-start gap-x-2">
                 <SecondaryButton
                   label="Toggle Header"
@@ -89,6 +97,7 @@ export default function EditAbilityCard({
             {headerToggle && (
               <div className="flex flex-wrap">
                 <EditHeaderBlock
+                  slot={ability.slot}
                   header={ability.header}
                   onChange={(key, v) => setValue(`abilities.${abilityIndex}.header`, { ...ability.header, [key]: v })}
                 />
@@ -105,7 +114,7 @@ export default function EditAbilityCard({
             </div>
           </div>
           {ability.slot !== AbilitySlot.PERK && (
-            <Fragment>
+            <>
               <div className="pt-2 border-t-2">
                 <div className="pb-4 text-xl font-bold">
                   <span className="mx-1">Scaling</span>
@@ -113,7 +122,7 @@ export default function EditAbilityCard({
                 </div>
                 <div className="grid grid-cols-2 gap-x-5">
                   {_.map(ability.scaling, (scale, index) => (
-                    <div key={index} className="pb-3">
+                    <div key={ability.slot + index} className="pb-3">
                       <div className="pb-2 font-bold uppercase">
                         <div className="inline-block w-14">Key</div>
                         <input
@@ -156,10 +165,10 @@ export default function EditAbilityCard({
                   ))}
                 </div>
               </div>
-              <SubAbilityBlock subAbility={ability?.subAbility} setSubAbility={setSubAbility} delSubAbility={delSubAbility} />
-            </Fragment>
+              <SubAbilityBlock slot={ability.slot} subAbility={ability?.subAbility} setSubAbility={setSubAbility} delSubAbility={delSubAbility} />
+            </>
           )}
-          <SummonBlock summon={ability?.summon} setSummon={setSummon} />
+          <SummonBlock slot={ability.slot} summon={ability?.summon} setSummon={setSummon} delSummon={delSummon} />
         </div>
       )}
     </Observer>

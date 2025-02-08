@@ -5,18 +5,20 @@ import _ from 'lodash'
 import { SummonHeaderInterface } from '@src/domain/summon.domain'
 
 export const EditHeaderBlock = ({
+  slot,
   header,
   summon,
   onChange,
 }: {
+  slot: string
   header: AbilityHeaderInterface | SummonHeaderInterface
   summon?: boolean
   onChange: (key: string, val: string) => void
 }) => {
   return (
     <>
-      {_.map(_.keys(header), (key, index) => (
-        <div key={index} className="w-1/2 px-2 py-1 text-sm whitespace-nowrap">
+      {_.map(_.keys(header), (key) => (
+        <div key={slot + key} className="w-1/2 px-2 py-1 text-sm whitespace-nowrap">
           <div className="inline-block w-1/2 font-bold uppercase">{_.startCase(key)}</div>
           <div className={classNames('font-normal bg-lightPB bg-opacity-10 rounded-lg', { uppercase: !summon })}>
             <RichTextInput

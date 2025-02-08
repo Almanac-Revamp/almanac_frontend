@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import EditAbilityCard from '../components/edit_ability_card'
 import { PrimaryButton } from '../../components/primary_button'
 import { NextSeo } from 'next-seo'
-import { useFetchHeroById, usePutHeroes } from '@src/data/api/hero.hook'
+import { useFetchHeroById, usePostHeroes, usePutHeroes } from '@src/data/api/hero.hook'
 import { getThumbnail, getIcon } from '../../../data/api/config/image.static'
 import { useForm } from 'react-hook-form'
 import { AttackType, ResourceType } from '@src/domain/hero.domain'
@@ -24,13 +24,15 @@ export const AddEditForm = ({ id }: { id?: string }) => {
   const [abilDis, setAbilityDis] = useState<AbilitySlot>(AbilitySlot.PERK)
 
   const [img, setImg] = useState('')
+  const [raw, setRaw] = useState<File>(null)
 
   const { data } = useFetchHeroById(id, { enabled: Boolean(id) })
   const { data: classes } = useFetchClasses()
 
+  const { mutate: upload } = usePostHeroes({ onSuccess: () => router.push('/') })
   const { mutate: update } = usePutHeroes(id, { onSuccess: () => router.push(`/show/${id}`) })
 
-  const { reset, register, control, watch, setValue, handleSubmit } = useForm({
+  const { reset, register, control, watch, setValue, handleSubmit, formState } = useForm({
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues: HeroDefaultValue(data),
@@ -105,9 +107,14 @@ export const AddEditForm = ({ id }: { id?: string }) => {
               <PrimaryButton
                 label="Save"
                 onClick={handleSubmit((data) => {
+                  const fd = new FormData()
+                  fd.append('hero', JSON.stringify(data))
+                  fd.append('oldImageName', hero.thumbName)
+                  if (raw) fd.append('thumbnail', raw)
                   if (id) {
-                    update({ hero: data })
+                    update(fd)
                   } else {
+                    upload(fd)
                   }
                 })}
               />
@@ -116,8 +123,13 @@ export const AddEditForm = ({ id }: { id?: string }) => {
               type="file"
               id="myFile"
               className="invisible h-0"
-              onChange={(e) => changeImage(e.target.files[0], (e) => setImg(e.target.result.toString()))}
+              onChange={(e) => {
+                setRaw(e.target.files[0])
+                setValue('thumbName', e.target.files[0].name, { shouldDirty: true })
+                changeImage(e.target.files[0], (e) => setImg(e.target.result.toString()))
+              }}
               accept=".jpg, .jpeg, .png"
+              multiple={false}
             />
           </div>
         </div>
@@ -128,13 +140,19 @@ export const AddEditForm = ({ id }: { id?: string }) => {
               <TogglePill label={slot} condition={slot != abilDis} onClick={() => setAbilityDis(slot)} />
             ))}
           </div>
-          <EditAbilityCard
-            ability={_.find(hero?.abilities, ['slot', abilDis])}
-            abilityIndex={_.findIndex(hero?.abilities, ['slot', abilDis])}
-            control={control}
-            setValue={setValue}
-            register={register}
-          />
+          {_.map(
+            AbilitySlot,
+            (item) =>
+              item === abilDis && (
+                <EditAbilityCard
+                  ability={_.find(hero?.abilities, ['slot', item])}
+                  abilityIndex={_.findIndex(hero?.abilities, ['slot', item])}
+                  control={control}
+                  setValue={setValue}
+                  register={register}
+                />
+              )
+          )}
         </div>
         <div className="order-3 w-full col-span-2 mt-5 pl-11">
           <ToggleBanner title="Base Statistics">

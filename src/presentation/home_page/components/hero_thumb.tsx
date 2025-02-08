@@ -5,9 +5,7 @@ export default function HeroThumb({ hero }) {
   return (
     <Link href={`/show/${hero._id}`}>
       <div className="flex px-6 py-3 transition duration-150 rounded-lg cursor-pointer hover:bg-PB">
-        <div>
-          <img className="object-cover object-center w-24 h-24 rounded-3xl" src={getThumbnail(hero.thumbName)} alt="Default" />
-        </div>
+        <img className="object-cover object-center w-24 h-24 rounded-3xl shrink-0" src={getThumbnail(hero.thumbName)} alt="Default" />
         <div className="pt-2 pl-3">
           <ul className="text-paleViolet">
             <li className="text-lg font-semibold truncate w-36">{hero.name}</li>
